@@ -1,4 +1,12 @@
 import app from './app.js'
+import { sequelize } from './database/database.js';
+
+import "./models/global/TipoCondicion.js"
+import "./models/global/TipoEntidad.js"
+import "./models/global/TipoMoneda.js"
+import "./models/global/TipoPago.js"
+import "./models/global/Archivo.js"
+import "./models/global/Entidad.js"
 
 
 
