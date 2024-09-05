@@ -1,5 +1,6 @@
 import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
+import { Lote } from "./Lote.js"
 
 export const Producto = sequelize.define("Producto",{
     id:{
@@ -28,6 +29,14 @@ export const Producto = sequelize.define("Producto",{
     precio:{
         type:DataTypes.DOUBLE
     }
-    
+});
 
-})
+Producto.hasMany(Lote,{
+    foreignKey: 'ProductoId',
+    sourceKey: 'id'
+});
+Lote.belongsTo(Producto,{
+    foreignKey: 'ProductoId',
+    targetKey: 'id'
+});
+export default Producto;

@@ -1,7 +1,7 @@
 import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
 import { Correlativo } from "./Correlativo.js";
-export const NumeracionCoprobante = sequelize.define('NumeracionCoprobante',{
+export const NumeracionComprobante = sequelize.define('NumeracionComprobante',{
 id:{
     type: DataTypes.INTEGER,
     primaryKey: true
@@ -18,11 +18,12 @@ descripcion:{
 
 //coneccion con tipocomprobante
 //coneccion con correlativo
-NumeracionCoprobante.hasMany(Correlativo,{
+NumeracionComprobante.hasMany(Correlativo,{
     foreignKey:"NumeracionComprobanteId",
     sourceKey:"id"
 })
-Correlativo.belongsTo(NumeracionCoprobante,{
+Correlativo.belongsTo(NumeracionComprobante,{
     foreignKey:"NumeracionComprobanteId",
     targetKey:"id"
 })
+export default NumeracionComprobante;

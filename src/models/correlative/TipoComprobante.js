@@ -1,6 +1,6 @@
 import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
-import { NumeracionCoprobante } from "./NumeracionComprobante.js";
+import { NumeracionComprobante } from "./NumeracionComprobante.js";
 export const TipoComprobante = sequelize.define('TipoComprobante',{
 id:{
     type: DataTypes.INTEGER,
@@ -22,10 +22,11 @@ TipoComprobante.hasMany(NumeracionComprobante, {
     sourceKey: 'id'
 });
 
-NumeracionCoprobante.belongsTo(TipoComprobante, {
+NumeracionComprobante.belongsTo(TipoComprobante, {
     foreignKey: 'TipoComprobanteId',
     targetKey: 'id'
 });
+export default TipoComprobante;
 /**
  * Un TipoComprobante puede tener múltiples NumeracionComprobante. Esto se logra mediante la relación hasMany en TipoComprobante.
 

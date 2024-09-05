@@ -24,3 +24,4 @@ Entidad.belongsTo(TipoEntidad,{
     foreignKey:"TipoEntidadId",
     targetKey:"id"
 })
+export default TipoEntidad;

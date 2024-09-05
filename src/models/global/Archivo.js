@@ -28,3 +28,4 @@ tipo_Archivo:{
 },{
     timestamps: false
 })
+export default Archivo;

@@ -1,17 +1,17 @@
 import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
 
-export const ProductoSerie = sequelize.define("ProductoSerie",{
+export const DetalleVenta = sequelize.define("DetalleVenta",{
     id:{
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey:true
+        primaryKey: true
     },
     sn:{
         type: DataTypes.STRING
+    },
+    precio_neto:{
+        type: DataTypes.DOUBLE
     }
 })
-export default ProductoSerie;
-//Conexion con Lote muchos a uno
-
-//Conexion con estadoProducto muchos a uno
+export default DetalleVenta;

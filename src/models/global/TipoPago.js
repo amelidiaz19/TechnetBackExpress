@@ -15,3 +15,4 @@ descripcion:{
 },{
     timestamps: false
 })
+export default TipoPago;

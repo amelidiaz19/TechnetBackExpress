@@ -25,3 +25,4 @@ export const Pedidos = sequelize.define("Pedidos",{
 },{
     timestamps: false
 })
+export default Pedidos;

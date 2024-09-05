@@ -1,5 +1,6 @@
 import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
+import { SubCategoria } from "./SubCategoria.js"
 
 export const Categoria = sequelize.define("Categoria",{
     id:{
@@ -16,5 +17,16 @@ export const Categoria = sequelize.define("Categoria",{
 
 },{
     timestamps: false
-})
+});
+
+Categoria.hasMany(SubCategoria,{
+    foreignKey: 'CategoriaId',
+    sourceKey: 'id'
+});
+SubCategoria.belongsTo(Categoria,{
+    foreignKey: 'CategoriaId',
+    targetKey: 'id'
+});
+
+export default Categoria;
 //coneccion con subcategoria marca uno a muchos

@@ -18,3 +18,4 @@ descripcion:{
 },{
     timestamps: false
 })
+export default TipoCondicion;

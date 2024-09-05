@@ -12,3 +12,4 @@ nombre:{
 },{
     timestamps: false
 })
+export default TipoMoneda;

@@ -25,4 +25,5 @@ email:{
 },{
     timestamps: false
 })
+export default Entidad;
 //coneccion con tipoEntidad (esta ya se encuentra en TipoEntidad)

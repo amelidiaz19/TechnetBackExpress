@@ -13,4 +13,5 @@ numero:{
 },{
     timestamps: false
 })
+export default Correlativo;
 //coneccion con NumeracionComprobante (esta se encuentra en NumeracionComprobante)
