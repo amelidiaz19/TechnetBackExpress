@@ -5,6 +5,7 @@ import { ProductoSerie } from "./ProductoSerie.js"
 export const EstadoProducto = sequelize.define("EstadoProducto",{
     id:{
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey: true
     },
     nombre:{

@@ -14,6 +14,8 @@ import { TipoPago } from "./global/TipoPago.js"
 
 import { Entidad } from "./users/Entidad.js"
 import { TipoEntidad } from "./users/TipoEntidad.js"
+import { Rol } from "./users/Rol.js"
+import { Privilegio } from "./users/Privilegio.js"
 
 import { Categoria } from "./inventory/Categoria.js"
 import { CategoriaMarca } from "./inventory/CategoriaMarca.js"
@@ -47,5 +49,7 @@ export const models = {
     Pedidos,
     Producto,
     ProductoSerie,
-    SubCategoria
+    SubCategoria,
+    Rol,
+    Privilegio
 }

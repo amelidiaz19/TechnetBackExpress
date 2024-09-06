@@ -5,14 +5,17 @@ import { Producto } from "./Producto.js"
 export const SubCategoria = sequelize.define("SubCategoria",{
     id:{
         type:DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey:true
     },
     nombre:{
         type:DataTypes.STRING
     },
-    descipcion:{
+    descripcion:{
         type:DataTypes.STRING
     }
+},{
+    timestamps: false
 });
 
 SubCategoria.hasMany(Producto,{

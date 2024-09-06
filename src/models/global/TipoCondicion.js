@@ -6,6 +6,7 @@ import { Venta } from "../documents/Venta.js"
 export const TipoCondicion = sequelize.define('TipoCondicion',{
 id:{
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true
 },
 nombre:{

@@ -6,11 +6,14 @@ import { Venta } from "../documents/Venta.js"
 export const TipoMoneda = sequelize.define('TipoMoneda',{
 id:{
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true
 },
 nombre:{
     type: DataTypes.STRING
 }
+},{
+    timestamps: false
 })
 
 TipoMoneda.hasMany(Compra,{

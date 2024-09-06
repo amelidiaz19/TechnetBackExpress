@@ -1,6 +1,6 @@
 import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
-
+import { DetalleVenta } from "./DetalleVenta.js"
 export const Venta = sequelize.define("Venta",{
     id:{
         type: DataTypes.UUID,
@@ -41,4 +41,13 @@ export const Venta = sequelize.define("Venta",{
         type: DataTypes.DOUBLE
     }
 })
+
+Venta.hasMany(DetalleVenta,{
+    foreignKey: 'VentaId',
+    sourceKey: 'id'
+});
+DetalleVenta.belongsTo(Venta,{
+    foreignKey: 'VentaId',
+    targetKey: 'id'
+});
 export default Venta;

@@ -29,6 +29,7 @@ password:{
     type: DataTypes.STRING
 }
 },{
+    timestamps: false,
     hooks:{
         beforeCreate: async(Entidad, options)=>{
             const salt = await bcrypt.genSalt(10);

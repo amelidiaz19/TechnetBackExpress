@@ -4,11 +4,14 @@ import { Producto } from "./Producto.js"
 export const CategoriaMarca = sequelize.define("CategoriaMarca",{
     id:{
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey:true
     },
     nombre:{
         type: DataTypes.STRING
     }
+},{
+    timestamps: false
 });
 
 //coneccion con Marca muchos a uno (se encuentra realcion en obj Marca)

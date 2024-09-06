@@ -5,6 +5,7 @@ import { ProductoSerie } from "./ProductoSerie.js"
 export const Lote = sequelize.define("Lote",{
     id:{
         type: DataTypes.INTEGER,
+        autoIncrement: true,
         primaryKey:true
     },
     nombre:{
@@ -13,6 +14,8 @@ export const Lote = sequelize.define("Lote",{
     fecha:{
         type:DataTypes.DATE
     }
+},{
+    timestamps: false
 })
 //Conexion con productos muchos a uno
 

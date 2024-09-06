@@ -4,6 +4,7 @@ import { NumeracionComprobante } from "./NumeracionComprobante.js";
 export const TipoComprobante = sequelize.define('TipoComprobante',{
 id:{
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true
 },
 prefijo:{

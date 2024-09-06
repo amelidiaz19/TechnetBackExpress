@@ -4,10 +4,11 @@ import { Entidad } from "./Entidad.js";
 export const Rol = sequelize.define('Rol',{
 id:{
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true
 },
 nombre:{
-    type: DataTypes.INTEGER
+    type: DataTypes.STRING
 },
 descripcion:{
     type: DataTypes.STRING

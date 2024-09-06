@@ -12,6 +12,8 @@ export const ProductoSerie = sequelize.define("ProductoSerie",{
     sn:{
         type: DataTypes.STRING
     }
+},{
+    timestamps: false
 })
 
 ProductoSerie.hasMany(DetalleCompra,{

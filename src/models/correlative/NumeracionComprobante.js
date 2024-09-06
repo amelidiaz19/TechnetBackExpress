@@ -4,6 +4,7 @@ import { Correlativo } from "./Correlativo.js";
 export const NumeracionComprobante = sequelize.define('NumeracionComprobante',{
 id:{
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true
 },
 numeracion:{

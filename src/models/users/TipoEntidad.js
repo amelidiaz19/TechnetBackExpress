@@ -4,6 +4,7 @@ import { Entidad } from "./Entidad.js";
 export const TipoEntidad = sequelize.define('TipoEntidad',{
 id:{
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true
 },
 descripcion:{

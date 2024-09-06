@@ -29,6 +29,8 @@ export const Producto = sequelize.define("Producto",{
     precio:{
         type:DataTypes.DOUBLE
     }
+},{
+    timestamps: false
 });
 
 Producto.hasMany(Lote,{

@@ -5,6 +5,7 @@ import { CategoriaMarca } from "./CategoriaMarca.js"
 export const Marca = sequelize.define("Marca",{
 id:{
     type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey:true
 },
 nombre:{

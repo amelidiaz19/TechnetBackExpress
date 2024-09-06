@@ -5,7 +5,7 @@ import { SubCategoria } from "./SubCategoria.js"
 export const Categoria = sequelize.define("Categoria",{
     id:{
         type: DataTypes.INTEGER,
-        autoIncrementIdentity: true,
+        autoIncrement: true,
         primaryKey: true
     },
     nombre:{
