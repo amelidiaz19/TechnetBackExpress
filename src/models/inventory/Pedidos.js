@@ -11,7 +11,7 @@ export const Pedidos = sequelize.define("Pedidos",{
         type: DataTypes.DATE
     },
     productos:{
-        type:DataTypes.STRING //aqui se guarda un json
+        type:DataTypes.JSON //aqui se guarda un json
     },
     datospago:{
         type:DataTypes.JSON //json de datos de izipay
@@ -22,7 +22,5 @@ export const Pedidos = sequelize.define("Pedidos",{
     username:{
         type: DataTypes.STRING
     }
-},{
-    timestamps: false
 })
 export default Pedidos;

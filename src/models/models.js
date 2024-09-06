@@ -8,11 +8,12 @@ import { Venta } from "./documents/Venta.js"
 import { DetalleVenta } from "./documents/DetalleVenta.js"
 
 import { Archivo } from "./global/Archivo.js"
-import { Entidad } from "./global/Entidad.js"
 import { TipoCondicion } from "./global/TipoCondicion.js"
-import { TipoEntidad } from "./global/TipoEntidad.js"
 import { TipoMoneda } from "./global/TipoMoneda.js"
 import { TipoPago } from "./global/TipoPago.js"
+
+import { Entidad } from "./users/Entidad.js"
+import { TipoEntidad } from "./users/TipoEntidad.js"
 
 import { Categoria } from "./inventory/Categoria.js"
 import { CategoriaMarca } from "./inventory/CategoriaMarca.js"

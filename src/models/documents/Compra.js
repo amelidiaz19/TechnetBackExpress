@@ -1,5 +1,6 @@
 import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
+import { DetalleCompra } from "./DetalleCompra.js"
 
 export const Compra = sequelize.define("Compra", {
     id:{
@@ -36,8 +37,21 @@ export const Compra = sequelize.define("Compra", {
     },
     url_pdf:{
         type: DataTypes.STRING
+    },
+    tipo_cambio: {
+        type: DataTypes.DOUBLE
     }
 })
+
+Compra.hasMany(DetalleCompra,{
+    foreignKey: 'CompraId',
+    sourceKey: 'id'
+});
+DetalleCompra.belongsTo(Compra,{
+    foreignKey: 'CompraId',
+    targetKey: 'id'
+});
+
 export default Compra;
 //Coneccion muchos a uno con Entidad
 //Coneccion muchos a uno con User
