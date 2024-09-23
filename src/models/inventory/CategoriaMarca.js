@@ -1,27 +1,39 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { Producto } from "./Producto.js"
-export const CategoriaMarca = sequelize.define("CategoriaMarca",{
-    id:{
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey:true
-    },
-    nombre:{
-        type: DataTypes.STRING
-    }
-},{
-    timestamps: false
-});
+import { Model, DataTypes } from "sequelize";
 
-//coneccion con Marca muchos a uno (se encuentra realcion en obj Marca)
-//conecccion con producto uno a muchos
-CategoriaMarca.hasMany(Producto,{
-    foreignKey: 'CategoriaMarcaId',
-    sourceKey: 'id'
-});
-Producto.belongsTo(CategoriaMarca,{
-    foreignKey: 'CategoriaMarcaId',
-    targetKey: 'id'
-});
+class CategoriaMarca extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        nombre: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "CategoriaMarca",
+      }
+    );
+
+    return this;
+  }
+  static associate(models) {
+    //coneccion con Marca muchos a uno (se encuentra realcion en obj Marca)
+    //conecccion con producto uno a muchos
+    this.hasMany(models.Producto, {
+      foreignKey: "CategoriaMarcaId",
+      sourceKey: "id",
+    });
+    models.Producto.belongsTo(this, {
+      foreignKey: "CategoriaMarcaId",
+      targetKey: "id",
+    });
+  }
+}
+
 export default CategoriaMarca;

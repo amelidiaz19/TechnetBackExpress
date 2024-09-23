@@ -1,32 +1,43 @@
-import { sequelize } from "../../database/database.js";
 import { DataTypes } from "sequelize";
-import { Producto } from "./Producto.js"
 
-export const SubCategoria = sequelize.define("SubCategoria",{
-    id:{
-        type:DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey:true
-    },
-    nombre:{
-        type:DataTypes.STRING
-    },
-    descripcion:{
-        type:DataTypes.STRING
-    }
-},{
-    timestamps: false
-});
+import { Model } from "sequelize";
 
-SubCategoria.hasMany(Producto,{
-    foreignKey: 'SubCategoriaId',
-    sourceKey: 'id'
-});
-Producto.belongsTo(SubCategoria,{
-    foreignKey: 'SubCategoriaId',
-    targetKey: 'id'
-});
+class SubCategoria extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        nombre: {
+          type: DataTypes.STRING,
+        },
+        descripcion: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "SubCategoria",
+      }
+    );
+
+    return this;
+  }
+  static associate(models) {
+    // Un Curso pertenece a un Usuario
+    this.hasMany(models.Producto, {
+      foreignKey: "SubCategoriaId",
+      sourceKey: "id",
+    });
+    models.Producto.belongsTo(this, {
+      foreignKey: "SubCategoriaId",
+      targetKey: "id",
+    });
+  }
+}
 
 export default SubCategoria;
-//coneccion con muchos a uno con categoria
-//coneccion con uno a muchos con producto

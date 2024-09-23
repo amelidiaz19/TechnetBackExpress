@@ -1,30 +1,42 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { Correlativo } from "./Correlativo.js";
-export const NumeracionComprobante = sequelize.define('NumeracionComprobante',{
-id:{
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-},
-numeracion:{
-    type: DataTypes.BIGINT
-},
-descripcion:{
-    type: DataTypes.STRING
-}
-},{
-    timestamps: false
-})
+import { Model, DataTypes } from "sequelize";
 
-//coneccion con tipocomprobante
-//coneccion con correlativo
-NumeracionComprobante.hasMany(Correlativo,{
-    foreignKey:"NumeracionComprobanteId",
-    sourceKey:"id"
-})
-Correlativo.belongsTo(NumeracionComprobante,{
-    foreignKey:"NumeracionComprobanteId",
-    targetKey:"id"
-})
+class NumeracionComprobante extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        numeracion: {
+          type: DataTypes.BIGINT,
+        },
+        descripcion: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "NumeracionComprobante",
+      }
+    );
+
+    return this;
+  }
+  static associate(models) {
+    //coneccion con tipocomprobante
+    //coneccion con correlativo
+    this.hasMany(models.Correlativo, {
+      foreignKey: "NumeracionComprobanteId",
+      sourceKey: "id",
+    });
+    models.Correlativo.belongsTo(this, {
+      foreignKey: "NumeracionComprobanteId",
+      targetKey: "id",
+    });
+  }
+}
+
 export default NumeracionComprobante;

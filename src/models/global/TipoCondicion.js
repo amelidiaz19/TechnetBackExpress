@@ -1,43 +1,52 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { Compra } from "../documents/Compra.js"
-import { Venta } from "../documents/Venta.js"
+import { Model, DataTypes } from "sequelize";
 
-export const TipoCondicion = sequelize.define('TipoCondicion',{
-id:{
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-},
-nombre:{
-    type: DataTypes.STRING
-},
-diascredito:{
-    type: DataTypes.INTEGER
-},
-descripcion:{
-    type: DataTypes.STRING
+class TipoCondicion extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        nombre: {
+          type: DataTypes.STRING,
+        },
+        diascredito: {
+          type: DataTypes.INTEGER,
+        },
+        descripcion: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "TipoCondicion",
+      }
+    );
+
+    return this;
+  }
+  static associate(models) {
+    this.hasMany(models.Compra, {
+      foreignKey: "TipoCondicionId",
+      sourceKey: "id",
+    });
+    models.Compra.belongsTo(this, {
+      foreignKey: "TipoCondicionId",
+      targetKey: "id",
+    });
+
+    this.hasMany(models.Venta, {
+      foreignKey: "TipoCondicionId",
+      sourceKey: "id",
+    });
+    models.Venta.belongsTo(this, {
+      foreignKey: "TipoCondicionId",
+      targetKey: "id",
+    });
+  }
 }
-},{
-    timestamps: false
-})
-
-TipoCondicion.hasMany(Compra,{
-    foreignKey: 'TipoCondicionId',
-    sourceKey: 'id'
-});
-Compra.belongsTo(TipoCondicion,{
-    foreignKey: 'TipoCondicionId',
-    targetKey: 'id'
-});
-
-TipoCondicion.hasMany(Venta,{
-    foreignKey: 'TipoCondicionId',
-    sourceKey: 'id'
-});
-Venta.belongsTo(TipoCondicion,{
-    foreignKey: 'TipoCondicionId',
-    targetKey: 'id'
-});
 
 export default TipoCondicion;

@@ -1,28 +1,40 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { Entidad } from "./Entidad.js";
-export const TipoEntidad = sequelize.define('TipoEntidad',{
-id:{
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-},
-descripcion:{
-    type: DataTypes.STRING
-},
-cantdigitos:{
-    type: DataTypes.INTEGER
-},
-},{
-    timestamps: false
-})
+import { Model, DataTypes } from "sequelize";
 
-TipoEntidad.hasMany(Entidad,{
-    foreignKey:"TipoEntidadId",
-    sourceKey:"id"
-})
-Entidad.belongsTo(TipoEntidad,{
-    foreignKey:"TipoEntidadId",
-    targetKey:"id"
-})
+class TipoEntidad extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        descripcion: {
+          type: DataTypes.STRING,
+        },
+        cantdigitos: {
+          type: DataTypes.INTEGER,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "TipoEntidad",
+      }
+    );
+
+    return this;
+  }
+  static associate(models) {
+    this.hasMany(models.Entidad, {
+      foreignKey: "TipoEntidadId",
+      sourceKey: "id",
+    });
+    models.Entidad.belongsTo(this, {
+      foreignKey: "TipoEntidadId",
+      targetKey: "id",
+    });
+  }
+}
+
 export default TipoEntidad;

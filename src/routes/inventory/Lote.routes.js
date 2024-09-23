@@ -1,5 +1,5 @@
 import { Router } from "express";
-import LoteService from "../../services/inventory/LoteService.js";
+import LoteService from "../../Controller/inventory/LoteService.js";
 
 export const LoteRouter  = Router();
 

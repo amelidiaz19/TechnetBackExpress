@@ -1,25 +1,37 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { ProductoSerie } from "./ProductoSerie.js"
+import { Model, DataTypes } from "sequelize";
 
-export const EstadoProducto = sequelize.define("EstadoProducto",{
-    id:{
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    nombre:{
-        type: DataTypes.STRING
-    }
-},{
-    timestamps: false
-});
-EstadoProducto.hasMany(ProductoSerie,{
-    foreignKey: 'EstadoProductoId',
-    sourceKey: 'id'
-});
-ProductoSerie.belongsTo(EstadoProducto,{
-    foreignKey: 'EstadoProductoId',
-    targetKey: 'id'
-});
+class EstadoProducto extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        nombre: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "EstadoProducto",
+      }
+    );
+
+    return this;
+  }
+  static associate(models) {
+    this.hasMany(models.ProductoSerie, {
+      foreignKey: "EstadoProductoId",
+      sourceKey: "id",
+    });
+    models.ProductoSerie.belongsTo(this, {
+      foreignKey: "EstadoProductoId",
+      targetKey: "id",
+    });
+  }
+}
+
 export default EstadoProducto;

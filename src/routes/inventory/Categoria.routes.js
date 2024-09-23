@@ -1,15 +1,15 @@
 import { Router } from "express";
-import CategoriaService from "../../services/inventory/CategoriaService.js";
+import CategoriaController from "../../Controller/inventory/CategoriaController.js";
 
 export const CategoriaRouter = Router();
 
-CategoriaRouter.get("", CategoriaService.GetAll);
-CategoriaRouter.get("/paged", CategoriaService.GetAllPaged);
-CategoriaRouter.get("/:id", CategoriaService.GetById);
-CategoriaRouter.post("", CategoriaService.Save);
-CategoriaRouter.post("/saves", CategoriaService.SavesAll);
-CategoriaRouter.get("/subs/:id", CategoriaService.SubCategoriaBelongs);
-CategoriaRouter.put("/:id", CategoriaService.Update);
-CategoriaRouter.delete(":id", CategoriaService.Delete);
+CategoriaRouter.get("", CategoriaController.GetAll);
+CategoriaRouter.get("/paged", CategoriaController.GetAllPaged);
+CategoriaRouter.get("/:id", CategoriaController.GetById);
+CategoriaRouter.post("", CategoriaController.Save);
+CategoriaRouter.post("/saves", CategoriaController.SavesAll);
+CategoriaRouter.get("/subs/:id", CategoriaController.SubCategoriaBelongs);
+CategoriaRouter.put("/:id", CategoriaController.Update);
+CategoriaRouter.delete(":id", CategoriaController.Delete);
 
 export default CategoriaRouter;

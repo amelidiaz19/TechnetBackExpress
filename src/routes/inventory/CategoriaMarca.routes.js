@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CategoriaMarcaService from "../../services/inventory/CategoriaMarcaService.js";
+import CategoriaMarcaService from "../../Controller/inventory/CategoriaMarcaService.js";
 
 export const CategoriaMarcaRouter = Router();
 

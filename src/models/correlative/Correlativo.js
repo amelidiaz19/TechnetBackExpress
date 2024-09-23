@@ -1,26 +1,36 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { Venta } from "../documents/Venta.js"
+import { Model, DataTypes } from "sequelize";
 
-export const Correlativo = sequelize.define('Correlativo',{
-id:{
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true
-},
-numero:{
-    type: DataTypes.BIGINT
+class Correlativo extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          primaryKey: true,
+        },
+        numero: {
+          type: DataTypes.BIGINT,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "Correlativo",
+      }
+    );
+    return this;
+  }
+  static associate(models) {
+    this.hasMany(models.Venta, {
+      foreignKey: "CorrelativoId",
+      sourceKey: "id",
+    });
+    models.Venta.belongsTo(this, {
+      foreignKey: "CorrelativoId",
+      targetKey: "id",
+    });
+  }
 }
-},{
-    timestamps: false
-})
-Correlativo.hasMany(Venta,{
-    foreignKey: 'CorrelativoId',
-    sourceKey: 'id'
-});
-Venta.belongsTo(Correlativo,{
-    foreignKey: 'CorrelativoId',
-    targetKey: 'id'
-});
+
 export default Correlativo;
-//coneccion con NumeracionComprobante (esta se encuentra en NumeracionComprobante)

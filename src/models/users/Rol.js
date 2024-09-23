@@ -1,28 +1,40 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { Entidad } from "./Entidad.js";
-export const Rol = sequelize.define('Rol',{
-id:{
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true
-},
-nombre:{
-    type: DataTypes.STRING
-},
-descripcion:{
-    type: DataTypes.STRING
-}
-},{
-    timestamps: false
-})
+import { Model, DataTypes } from "sequelize";
 
-Rol.hasMany(Entidad,{
-    foreignKey:"RolId",
-    sourceKey:"id"
-})
-Entidad.belongsTo(Rol,{
-    foreignKey:"RolId",
-    targetKey:"id"
-})
+class Rol extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        nombre: {
+          type: DataTypes.STRING,
+        },
+        descripcion: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "Rol",
+      }
+    );
+
+    return this;
+  }
+  static associate(models) {
+    this.hasMany(models.Entidad, {
+      foreignKey: "RolId",
+      sourceKey: "id",
+    });
+    models.Entidad.belongsTo(this, {
+      foreignKey: "RolId",
+      targetKey: "id",
+    });
+  }
+}
+
 export default Rol;

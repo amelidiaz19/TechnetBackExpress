@@ -1,46 +1,68 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { Producto } from "../inventory/Producto.js"
+import { Model, DataTypes } from "sequelize";
 
-export const Archivo = sequelize.define('Archivo',{
-id:{
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
-    primaryKey: true
-},
-nombre:{
-    type: DataTypes.STRING
-},
-namekey:{
-    type: DataTypes.STRING
-},
-bucketname:{
-    type: DataTypes.STRING
-},
-url:{
-    type: DataTypes.STRING
-},
-descripcion:{
-    type: DataTypes.STRING
-},
-tipo_Archivo:{
-    type: DataTypes.STRING
-},
-},{
-    timestamps: false
-})
+class Archivo extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          primaryKey: true,
+        },
+        nombre: {
+          type: DataTypes.STRING,
+        },
+        namekey: {
+          type: DataTypes.STRING,
+        },
+        bucketname: {
+          type: DataTypes.STRING,
+        },
+        url: {
+          type: DataTypes.STRING,
+        },
+        descripcion: {
+          type: DataTypes.STRING,
+        },
+        tipo_Archivo: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "Archivo",
+      }
+    );
 
-//realacion uno a muchos con producto, la foreign key en la tabla Producto es ArchivoPrincipalId
-Archivo.hasMany(Producto,{
-    foreignKey: 'ArchivoPrincipalId',
-    sourceKey: 'id'
-});
-Producto.belongsTo(Archivo,{
-    foreignKey: 'ArchivoPrincipalId',
-    targetKey: 'id'
-});
-//Relacion muchos a muchos con producto
-Archivo.belongsToMany(Producto, { through: 'producto_archivo'});
-Producto.belongsToMany(Archivo, { through: 'producto_archivo'});
+    return this;
+  }
+  static associate(models) {
+    //realacion uno a muchos con producto, la foreign key en la tabla Producto es ArchivoPrincipalId
+    this.hasMany(models.Producto, {
+      foreignKey: "ArchivoPrincipalId",
+      sourceKey: "id",
+      as: "ArchivoPrincipal",
+    });
+    models.Producto.belongsTo(this, {
+      foreignKey: "ArchivoPrincipalId",
+      targetKey: "id",
+      as: "ArchivoPrincipal",
+    });
+    //Relacion muchos a muchos con producto
+    this.belongsToMany(models.Producto, {
+      through: "producto_archivo",
+      foreignKey: "ArchivoId", // Llave foránea en la tabla intermedia que referencia a Archivo
+      otherKey: "ProductoId",
+      as: "ArchivosRelacionados",
+    });
+    models.Producto.belongsToMany(this, {
+      through: "producto_archivo",
+      foreignKey: "ProductoId", // Llave foránea en la tabla intermedia que referencia a Producto
+      otherKey: "ArchivoId",
+      as: "ArchivosRelacionados",
+    });
+  }
+}
 
 export default Archivo;

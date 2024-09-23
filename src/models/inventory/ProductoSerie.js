@@ -1,39 +1,48 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { DetalleVenta } from "../documents/DetalleVenta.js"
-import { DetalleCompra } from "../documents/DetalleCompra.js"
+import { Model, DataTypes } from "sequelize";
 
-export const ProductoSerie = sequelize.define("ProductoSerie",{
-    id:{
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey:true
-    },
-    sn:{
-        type: DataTypes.STRING
-    }
-},{
-    timestamps: false
-})
+class ProductoSerie extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.UUID,
+          defaultValue: DataTypes.UUIDV4,
+          primaryKey: true,
+        },
+        sn: {
+          type: DataTypes.STRING,
+          allowNull: false,
+          unique: true,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "ProductoSerie",
+      }
+    );
 
-ProductoSerie.hasMany(DetalleCompra,{
-    foreignKey: 'ProductoSerieId',
-    sourceKey: 'id'
-});
-DetalleCompra.belongsTo(ProductoSerie, {
-    foreignKey: 'ProductoSerieId',
-    sourceKey: 'id'
-});
+    return this;
+  }
+  static associate(models) {
+    this.hasMany(models.DetalleCompra, {
+      foreignKey: "ProductoSerieId",
+      sourceKey: "id",
+    });
+    models.DetalleCompra.belongsTo(this, {
+      foreignKey: "ProductoSerieId",
+      sourceKey: "id",
+    });
 
-ProductoSerie.hasMany(DetalleVenta,{
-    foreignKey: 'ProductoSerieId',
-    sourceKey: 'id'
-});
-DetalleVenta.belongsTo(ProductoSerie, {
-    foreignKey: 'ProductoSerieId',
-    sourceKey: 'id'
-});
+    this.hasMany(models.DetalleVenta, {
+      foreignKey: "ProductoSerieId",
+      sourceKey: "id",
+    });
+    models.DetalleVenta.belongsTo(this, {
+      foreignKey: "ProductoSerieId",
+      sourceKey: "id",
+    });
+  }
+}
 
 export default ProductoSerie;
-//Conexion con Lote muchos a uno
-//Conexion con estadoProducto muchos a uno

@@ -1,32 +1,40 @@
-import { sequelize } from "../../database/database.js";
-import { DataTypes } from "sequelize";
-import { SubCategoria } from "./SubCategoria.js"
+import { Model, DataTypes } from "sequelize";
 
-export const Categoria = sequelize.define("Categoria",{
-    id:{
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
-    },
-    nombre:{
-        type: DataTypes.STRING,
-    },
-    descripcion:{
-        type: DataTypes.STRING
-    }
+class Categoria extends Model {
+  static init(sequelize) {
+    super.init(
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        nombre: {
+          type: DataTypes.STRING,
+        },
+        descripcion: {
+          type: DataTypes.STRING,
+        },
+      }, // attributes
+      {
+        sequelize,
+        timestamps: false,
+        tableName: "Categoria",
+      }
+    );
 
-},{
-    timestamps: false
-});
-
-Categoria.hasMany(SubCategoria,{
-    foreignKey: 'CategoriaId',
-    sourceKey: 'id'
-});
-SubCategoria.belongsTo(Categoria,{
-    foreignKey: 'CategoriaId',
-    targetKey: 'id'
-});
+    return this;
+  }
+  static associate(models) {
+    this.hasMany(models.SubCategoria, {
+      foreignKey: "CategoriaId",
+      sourceKey: "id",
+    });
+    models.SubCategoria.belongsTo(this, {
+      foreignKey: "CategoriaId",
+      targetKey: "id",
+    });
+  }
+}
 
 export default Categoria;
-//coneccion con subcategoria marca uno a muchos
