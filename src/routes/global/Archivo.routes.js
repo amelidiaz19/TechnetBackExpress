@@ -1,12 +1,21 @@
-import { Router } from 'express';
-import ArchivoController from '../../Controller/inventory/ArchivoController.js';
+import { Router } from "express";
+import ArchivoController from "../../Controller/inventory/ArchivoController.js";
+import Authorization from "../../middlewares/Authorization.js";
+import upload from "../../middlewares/UploadImage.js";
 
 const ArchivoRoutes = new Router();
 
-ArchivoRoutes.get('/', ArchivoController.store);
-ArchivoRoutes.post('/', ArchivoController.store);
-ArchivoRoutes.put('/', ArchivoController.store);
-ArchivoRoutes.delete('/', ArchivoController.store);
-ArchivoRoutes.get('/publicitaria', ArchivoController.getImagenesPublicitarias);
+ArchivoRoutes.post(
+  "/",
+  [
+    Authorization,
+    upload.fields([
+      { name: "files", maxCount: 8 }, // Imágenes secundarias
+    ]),
+  ],
+  ArchivoController.Crear
+);
+ArchivoRoutes.delete("/", ArchivoController.DeleteImagen);
+ArchivoRoutes.get("/publicitaria", ArchivoController.getImagenesPublicitarias);
 
 export default ArchivoRoutes;

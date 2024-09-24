@@ -24,6 +24,10 @@ class CompraController {
       total,
       detalles,
     } = req.body;
+    if (documento_cliente == null || documento_cliente == "")
+      return res.status(400).json({ message: "El cliente es requerido" });
+    if (detalles.length == 0)
+      return res.status(400).json({ message: "No hay productos en la compra" });
     try {
       const CompraRegist = await Compra.create({
         EntidadNegocioId: usuario_id,
@@ -43,7 +47,6 @@ class CompraController {
         total,
       });
       const productoIds = detalles.map((detalle) => detalle.id_producto);
-      console.log(productoIds);
       const productos = await Producto.findAll({
         where: {
           id: {
@@ -73,9 +76,18 @@ class CompraController {
           }
         })
       );
+      for (const producto of productos) {
+        // Encontrar el detalle correspondiente por ID
+        const detalle = detalles.find((d) => d.id_producto === producto.id);
+
+        // Aumentar el stock del producto
+        producto.stock += detalle.cantidad;
+
+        // Guardar el producto actualizado
+        await producto.save();
+      }
       return res.json({ message: "Compra Registrada Exitosamente" });
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
         .json({ message: "Error al registrar la compra", error });

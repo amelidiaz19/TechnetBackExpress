@@ -2,7 +2,6 @@ import Pedidos from "../../models/inventory/Pedidos.js";
 class PedidosController {
   async register(req, res) {
     const { userId, productos, datospago, estado } = req.body;
-    console.log(req.body);
     const resp = await Pedidos.create({
       fecha: new Date(),
       productos,

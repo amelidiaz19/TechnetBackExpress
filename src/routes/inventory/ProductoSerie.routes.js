@@ -12,5 +12,10 @@ ProductoSerieRoutes.get(
   Authorization,
   ProductoSerieController.getSeriesByProductoId
 );
+ProductoSerieRoutes.get(
+  "/belong/:sn",
+  Authorization,
+  ProductoSerieController.getBelong
+);
 
 export default ProductoSerieRoutes;

@@ -24,12 +24,11 @@ class VentaController {
       total,
       detalles,
     } = req.body;
-    console.log(req.body);
+    if (documento_cliente == null || documento_cliente == "")
+      return res.status(400).json({ message: "El cliente es requerido" });
+    if (detalles.length == 0)
+      return res.status(400).json({ message: "No hay productos en la venta" });
     try {
-      /**
-         * Columns:
-	CorrelativoId	char(36)
-         */
       const CompraRegist = await Venta.create({
         EntidadNegocioId: usuario_id,
         documento,
@@ -61,11 +60,16 @@ class VentaController {
           if (producto) {
             await Promise.all(
               detalle.series.map(async (serie) => {
-                const producto_serie = await ProductoSerie.findOne({
-                  where: {
-                    sn: serie,
+                const producto_serie = await ProductoSerie.update(
+                  {
+                    EstadoProductoId: 2, // Datos a actualizar
                   },
-                });
+                  {
+                    where: {
+                      sn: serie, // Condición
+                    },
+                  }
+                );
                 await DetalleVenta.create({
                   CompraId: CompraRegist.id,
                   ProductoSerieId: producto_serie.id,
@@ -77,9 +81,18 @@ class VentaController {
           }
         })
       );
+      for (const producto of productos) {
+        // Encontrar el detalle correspondiente por ID
+        const detalle = detalles.find((d) => d.id_producto === producto.id);
+
+        // Aumentar el stock del producto
+        producto.stock -= detalle.cantidad;
+
+        // Guardar el producto actualizado
+        await producto.save();
+      }
       return res.json({ message: "Venta Registrada Exitosamente" });
     } catch (error) {
-      console.log(error);
       return res
         .status(500)
         .json({ message: "Error al registrar la compra", error });

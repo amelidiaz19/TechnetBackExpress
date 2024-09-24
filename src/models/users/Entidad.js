@@ -29,6 +29,7 @@ class Entidad extends Model {
         email: {
           type: DataTypes.STRING,
           unique: true,
+          allowNull: true,
         },
         password: {
           type: DataTypes.STRING,
@@ -44,8 +45,20 @@ class Entidad extends Model {
         tableName: "Entidad",
         hooks: {
           beforeCreate: async (Entidad, options) => {
-            const salt = await bcrypt.genSalt(10);
-            Entidad.password = await bcrypt.hash(Entidad.password, salt);
+            console.log("ENCRYPT");
+            console.log(Entidad.password);
+            if (Entidad.password != null) {
+              const salt = await bcrypt.genSalt(10);
+              Entidad.password = await bcrypt.hash(Entidad.password, salt);
+            }
+          },
+          beforeUpdate: async (Entidad, options) => {
+            console.log("ENCRYPT");
+            console.log(Entidad.password);
+            if (Entidad.changed("password") && Entidad.password != null) {
+              const salt = await bcrypt.genSalt(10);
+              Entidad.password = await bcrypt.hash(Entidad.password, salt);
+            }
           },
         },
       }

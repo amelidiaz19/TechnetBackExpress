@@ -4,7 +4,7 @@ class PaymentController {
   async externarData(req, res) {
     const body = req.body;
     const username = process.env.PAYMENT_USERNAME;
-    const password = process.env.PAYMENT_PASSWORD_TEST;
+    const password = process.env.PAYMENT_PASSWORD_PRODUCCION;
     const url = process.env.PAYMENT_URL;
 
     const encodeCredentials = (username, password) => {
@@ -28,7 +28,7 @@ class PaymentController {
   }
   async validate(req, res) {
     const { clientAnswer, hash } = req.body;
-    const paymentHash = process.env.PAYMENT_HASH_TEST;
+    const paymentHash = process.env.PAYMENT_HASH_PRODUCCION;
     let response = {};
     try {
       const answerJson = JSON.stringify(clientAnswer);

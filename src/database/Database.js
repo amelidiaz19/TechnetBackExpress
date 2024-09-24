@@ -1,22 +1,3 @@
-/*import { Sequelize } from "sequelize";
-console.log("\n\n\n");
-console.log("datos database:");
-console.log("DB_NAME: " + process.env.DB_NAME);
-console.log("DB_USER: " + process.env.DB_USER);
-console.log("DB_PASSWORD: " + process.env.DB_PASSWORD);
-console.log("DB_HOST: " + process.env.DB_HOST);
-console.log("DB_PORT: " + process.env.DB_PORT);
-console.log("\n\n\n");
-export const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: "mysql",
-  }
-);*/
 import { configDotenv } from "dotenv";
 configDotenv();
 import Sequelize from "sequelize";
@@ -29,14 +10,14 @@ class Database {
 
   init() {
     try {
-      console.log("\n\n\n");
+      console.log("\n\n");
       console.log("datos database:");
       console.log("DB_NAME: " + process.env.DB_NAME);
       console.log("DB_USER: " + process.env.DB_USER);
       console.log("DB_PASSWORD: " + process.env.DB_PASSWORD);
       console.log("DB_HOST: " + process.env.DB_HOST);
       console.log("DB_PORT: " + process.env.DB_PORT);
-      console.log("\n\n\n");
+      console.log("\n\n");
       this.connection = new Sequelize(
         process.env.DB_NAME,
         process.env.DB_USER,
@@ -48,13 +29,6 @@ class Database {
           retry: { max: 3 },
         }
       );
-      /*this.connection = new Sequelize("technetprueba", "paul", "paulp", {
-        host: "localhost",
-        port: "3306",
-        dialect: "mysql",
-        retry: { max: 3 },
-      });*/
-      this.configuration();
       Object.values(models).forEach((model) => model.init(this.connection));
       Object.values(models).forEach((model) => {
         if (typeof model.associate === "function") {

@@ -13,11 +13,25 @@ ProductoRouter.get(
 ProductoRouter.get("/paged", ProductoController.GetPaged);
 ProductoRouter.post(
   "/",
-  upload.fields([
-    { name: "fileprincipal", maxCount: 1 }, // Imagen principal
-    { name: "files", maxCount: 5 }, // Imágenes secundarias
-  ]),
+  [
+    Authorization,
+    upload.fields([
+      { name: "fileprincipal", maxCount: 1 }, // Imagen principal
+      { name: "files", maxCount: 5 }, // Imágenes secundarias
+    ]),
+  ],
   ProductoController.Create
+);
+ProductoRouter.put(
+  "/",
+  [
+    Authorization,
+    upload.fields([
+      { name: "fileprincipal", maxCount: 1 }, // Imagen principal
+      { name: "files", maxCount: 5 }, // Imágenes secundarias
+    ]),
+  ],
+  ProductoController.Update
 );
 ProductoRouter.get("/:id", ProductoController.getById);
 

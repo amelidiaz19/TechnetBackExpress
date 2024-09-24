@@ -10,7 +10,6 @@ function Authorization(req, res, next) {
   }
   try {
     const token = authorization.split("Bearer ")[1];
-    console.log(token);
     if (!token) {
       return res.status(401).json({
         message: "Invalid Token Format",
@@ -18,7 +17,6 @@ function Authorization(req, res, next) {
     }
     const decode = jwt.verify(token, SECRET_KEY);
     req.userId = decode;
-    console.log(decode);
     next();
   } catch (error) {
     if (error instanceof jwt.TokenExpiredError) {

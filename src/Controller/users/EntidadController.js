@@ -40,72 +40,86 @@ class EntidadController {
     return res.status(404).json({ message: "Entidad no encontrada" });
   }
   async create(req, res) {
-    const userId = req.userId;
-    const {
-      nombre,
-      apellido,
-      documento,
-      direccion,
-      telefono,
-      email,
-      password,
-      RolId,
-      id_tipoEntidad,
-    } = req.body;
-    //verifica si el cliente ya existe, esto lo busca a partir del documento
-    const entidadExiste = await Entidad.findOne({ where: { documento } });
-    if (entidadExiste) {
-      //veficia si esta consulta viene website o dashboard administrativo.
-      //si viene de website no tendra un userId que basicamente seria id del usuario auth que genere la consulta desde el dashboard
-      if (!userId && !entidadExiste.verifiedWebsite) {
-        const entidad = await Entidad.update(
-          {
+    try {
+      const userId = req.userId;
+      const {
+        nombre,
+        apellido,
+        documento,
+        direccion,
+        telefono,
+        email,
+        password,
+        RolId,
+        id_tipoEntidad,
+      } = req.body;
+      //verifica si el cliente ya existe, esto lo busca a partir del documento
+      if (!documento)
+        return res.status(400).json({ message: "Se requiere de un Documento" });
+      if (!nombre)
+        return res.status(400).json({ message: "Se requiere de un apellido" });
+      if (!apellido)
+        return res.status(400).json({ message: "Se requiere de un apellido" });
+      const entidadExiste = await Entidad.findOne({ where: { documento } });
+      if (entidadExiste) {
+        //veficia si esta consulta viene website o dashboard administrativo.
+        //si viene de website no tendra un userId que basicamente seria id del usuario auth que genere la consulta desde el dashboard
+        if (!userId && !entidadExiste.verifiedWebsite) {
+          entidadExiste.nombre = nombre;
+          entidadExiste.apellido = apellido;
+          entidadExiste.direccion = direccion;
+          entidadExiste.telefono = telefono;
+          entidadExiste.email = email;
+          entidadExiste.password = password;
+          entidadExiste.RolId = 4;
+          entidadExiste.verifiedWebsite = true;
+
+          entidadExiste.save();
+          return res.status(200).json({ message: "registrado existosamente" });
+        } else {
+          return res.status(400).json({ message: "Entidad ya existe" });
+        }
+      } else {
+        if (!userId) {
+          if (!email)
+            return res.status(400).json({ message: "Se requiere de un email" });
+          const entidad = await Entidad.create({
             nombre,
             apellido,
+            documento,
             direccion,
             telefono,
             email,
             password,
             verifiedWebsite: true,
-            RolId: 1,
-          },
-          { where: { id: entidadExiste.id } }
-        );
-        return res.status(200).json(entidad);
-      } else {
-        return res.status(400).json({ message: "Entidad ya existe" });
+            RolId: 4,
+          });
+          return res
+            .status(200)
+            .json({ message: "Entidad creada exitosamente" });
+        } else {
+          const ROL = await Rol.findOne({ where: { id: RolId } });
+          if (!ROL) return res.status(400).json({ message: "Rol no valido" });
+
+          const entidad = await Entidad.create({
+            nombre,
+            apellido,
+            documento,
+            direccion,
+            telefono,
+            email: email == "" ? null : email,
+            password: password == "" ? null : password,
+            verifiedWebsite: false,
+            RolId: ROL.id,
+            TipoEntidadId: id_tipoEntidad,
+          });
+          return res
+            .status(200)
+            .json({ message: "Entidad creada exitosamente" });
+        }
       }
-    } else {
-      if (!userId) {
-        const entidad = await Entidad.create({
-          nombre,
-          apellido,
-          documento,
-          direccion,
-          telefono,
-          email,
-          password,
-          verifiedWebsite: true,
-          RolId: 4,
-        });
-        return res.status(200).json(entidad);
-      } else {
-        const ROL = await Rol.findOne({ where: { id: RolId } });
-        if (!ROL) return res.status(400).json({ message: "Rol no valido" });
-        const entidad = await Entidad.create({
-          nombre,
-          apellido,
-          documento,
-          direccion,
-          telefono,
-          email: "",
-          password: "",
-          verifiedWebsite: false,
-          RolId: ROL.id,
-          TipoEntidadId: id_tipoEntidad,
-        });
-        return res.status(200).json(entidad);
-      }
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
     }
   }
   async update(req, res) {
@@ -169,14 +183,11 @@ class EntidadController {
       if (!EntidadEncontrada) {
         return res.status(404).json({ message: "Entidad not found" });
       }
-      console.log(EntidadEncontrada);
       const resultado = await Entidad.comparePassword(
         password,
         EntidadEncontrada.password
       );
-      console.log(resultado);
       if (resultado) {
-        console.log(process.env.SECRET_KEY);
         const token = jwt.sign(
           { id: EntidadEncontrada.id },
           process.env.SECRET_KEY,
