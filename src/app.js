@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import { Routes } from "./routes/Routes.js";
+import path from "path";
+import { fileURLToPath } from "url";
 class App {
   constructor() {
     this.server = express();
@@ -11,7 +13,10 @@ class App {
   middlewares() {
     this.server.use(express.json());
     this.server.use(cors());
-    //this.server.use("/uploads", express.static(path.resolve("public/uploads")));
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const uploadsDir = path.resolve(__dirname, "../public/uploads");
+    this.server.use("/uploads", express.static(uploadsDir));
   }
 
   routes() {

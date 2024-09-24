@@ -8,18 +8,7 @@ import CategoriaMarca from "../../models/inventory/CategoriaMarca.js";
 import Archivo from "../../models/global/Archivo.js";
 import multer from "multer";
 class ProductoController {
-  constructor() {
-    const storage = multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, "public/uploads");
-      },
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-      },
-    });
-
-    this.upload = multer({ storage }).any();
-  }
+  constructor() {}
   async getAll(req, res) {
     const productos = await Producto.findAll({
       include: [
@@ -295,31 +284,9 @@ class ProductoController {
   }
   async Create(req, res) {
     // Llamar a multer para procesar la subida de archivos
-    this.upload(req, res, (err) => {
+    if (req.files) {
       console.log(req.files);
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-
-      // Acceder a los archivos subidos
-      const imagenPrincipal = req.files?.fileprincipal?.[0];
-      const imagenesSecundarias = req.files?.files;
-      console.log(imagenPrincipal);
-      console.log(imagenesSecundarias);
-      // Aquí podrías manejar la lógica para guardar el producto en la base de datos
-      // e incluir las rutas de las imágenes subidas
-
-      // Ejemplo de respuesta JSON con las rutas de las imágenes
-      res.json({
-        message: "Producto creado exitosamente",
-        imagenPrincipal: imagenPrincipal
-          ? `/uploads/${imagenPrincipal.filename}`
-          : null,
-        imagenesSecundarias: imagenesSecundarias
-          ? imagenesSecundarias.map((img) => `/uploads/${img.filename}`)
-          : [],
-      });
-    });
+    }
   }
 }
 
