@@ -3,9 +3,11 @@ import crypto from "crypto";
 class PaymentController {
   async externarData(req, res) {
     const body = req.body;
-    const username = process.env.PAYMENT_USERNAME;
-    const password = process.env.PAYMENT_PASSWORD_PRODUCCION;
-    const url = process.env.PAYMENT_URL;
+    const username = "80203493";
+    const password =
+      "prodpassword_I0lABqAE4l2jQ99mWMfUldMYB7TvugGErPaSC9vYr7rnM";
+    const url =
+      "https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment";
 
     const encodeCredentials = (username, password) => {
       const auth = `${username}:${password}`;
@@ -28,7 +30,7 @@ class PaymentController {
   }
   async validate(req, res) {
     const { clientAnswer, hash } = req.body;
-    const paymentHash = process.env.PAYMENT_HASH_PRODUCCION;
+    const paymentHash = "uMYYm2KkOCwfCN2iBouF4BGWfHIDkmK6kAG1RLwiw4zgk";
     let response = {};
     try {
       const answerJson = JSON.stringify(clientAnswer);
@@ -50,7 +52,7 @@ class PaymentController {
   }
   async ipn(req, res) {
     const { "kr-answer": krAnswer, "kr-hash": krHash } = req.body; // Extraer kr-answer y kr-hash del cuerpo de la solicitud
-    const paymentHash = process.env.PAYMENT_HASH; // Obtener el payment_hash de las variables de entorno
+    const paymentHash = "uMYYm2KkOCwfCN2iBouF4BGWfHIDkmK6kAG1RLwiw4zgk"; // Obtener el payment_hash de las variables de entorno
 
     let response = {};
 

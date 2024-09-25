@@ -294,7 +294,7 @@ class ProductoController {
     } = JSON.parse(req.body.producto);
     if (req.files) {
       const filename = req.files.fileprincipal[0].filename.replace(/\s+/g, "");
-      const prefijo = `https://${process.env.DB_HOST}:${process.env.PUERTO}/uploads`;
+      const prefijo = `https://technetsac.com/api:3000/uploads`;
       const Archivo_principal = await Archivo.create({
         url: `${prefijo}/${filename}`,
         nombre,
@@ -407,7 +407,7 @@ class ProductoController {
       await Archivo.destroy({ where: { id: product.ArchivoPrincipal.url } });
       await product.update({ ArchivoPrincipalId: null });
     }
-    const prefijo = `https://${process.env.DB_HOST}:${process.env.PUERTO}/uploads`;
+    const prefijo = `https://technetsac.com/api:3000/uploads`;
     if (req.files) {
       let Archivo_principal;
       if (req.files.fileprincipal) {

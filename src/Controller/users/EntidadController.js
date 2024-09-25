@@ -154,7 +154,10 @@ class EntidadController {
   async validate(req, res) {
     const { token } = req.body;
     try {
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      const decoded = jwt.verify(
+        token,
+        "jknfcisc32879bnda87213n1328723g43576dvu28632ugi"
+      );
 
       const entidad = await Entidad.findOne({
         where: { id: decoded.id },
@@ -190,7 +193,7 @@ class EntidadController {
       if (resultado) {
         const token = jwt.sign(
           { id: EntidadEncontrada.id },
-          process.env.SECRET_KEY,
+          "jknfcisc32879bnda87213n1328723g43576dvu28632ugi",
           {
             expiresIn: 86400,
           }

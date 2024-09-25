@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-const SECRET_KEY = process.env.SECRET_KEY;
+const SECRET_KEY = "jknfcisc32879bnda87213n1328723g43576dvu28632ugi";
 
 function Authorization(req, res, next) {
   const authorization = req.headers.authorization;

@@ -10,22 +10,14 @@ class Database {
 
   init() {
     try {
-      console.log("\n\n");
-      console.log("datos database:");
-      console.log("DB_NAME: " + process.env.DB_NAME);
-      console.log("DB_USER: " + process.env.DB_USER);
-      console.log("DB_PASSWORD: " + process.env.DB_PASSWORD);
-      console.log("DB_HOST: " + process.env.DB_HOST);
-      console.log("DB_PORT: " + process.env.DB_PORT);
-      console.log("\n\n");
       this.connection = new Sequelize(
-        process.env.DB_NAME,
-        process.env.DB_USER,
-        process.env.DB_PASSWORD,
+        "technet2390_BackendExpress",
+        "technet2390_AdminExpress",
+        "HymL?VnOUh{8",
         {
-          host: process.env.DB_HOST,
-          port: process.env.DB_PORT,
-          dialect: process.env.DB_DIALECT,
+          host: "technetsac.com",
+          port: "3306",
+          dialect: "mysql",
           retry: { max: 3 },
         }
       );
