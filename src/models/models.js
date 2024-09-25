@@ -1,30 +1,30 @@
-import Correlativo from "./correlative/Correlativo.js";
-import NumeracionComprobante from "./correlative/NumeracionComprobante.js";
-import TipoComprobante from "./correlative/TipoComprobante.js";
+const Correlativo = require("./correlative/Correlativo.js");
+const NumeracionComprobante = require("./correlative/NumeracionComprobante.js");
+const TipoComprobante = require("./correlative/TipoComprobante.js");
 
-import Compra from "./documents/Compra.js";
-import DetalleCompra from "./documents/DetalleCompra.js";
-import Venta from "./documents/Venta.js";
-import DetalleVenta from "./documents/DetalleVenta.js";
+const Compra = require("./documents/Compra.js");
+const DetalleCompra = require("./documents/DetalleCompra.js");
+const Venta = require("./documents/Venta.js");
+const DetalleVenta = require("./documents/DetalleVenta.js");
 
-import Archivo from "./global/Archivo.js";
-import TipoCondicion from "./global/TipoCondicion.js";
-import TipoMoneda from "./global/TipoMoneda.js";
-import TipoPago from "./global/TipoPago.js";
+const Archivo = require("./global/Archivo.js");
+const TipoCondicion = require("./global/TipoCondicion.js");
+const TipoMoneda = require("./global/TipoMoneda.js");
+const TipoPago = require("./global/TipoPago.js");
 
-import Entidad from "./users/Entidad.js";
-import TipoEntidad from "./users/TipoEntidad.js";
-import Rol from "./users/Rol.js";
-import Privilegio from "./users/Privilegio.js";
+const Entidad = require("./users/Entidad.js");
+const TipoEntidad = require("./users/TipoEntidad.js");
+const Rol = require("./users/Rol.js");
+const Privilegio = require("./users/Privilegio.js");
 
-import Categoria from "./inventory/Categoria.js";
-import CategoriaMarca from "./inventory/CategoriaMarca.js";
-import EstadoProducto from "./inventory/EstadoProducto.js";
-import Marca from "./inventory/Marca.js";
-import Pedidos from "./inventory/Pedidos.js";
-import Producto from "./inventory/Producto.js";
-import ProductoSerie from "./inventory/ProductoSerie.js";
-import SubCategoria from "./inventory/SubCategoria.js";
+const Categoria = require("./inventory/Categoria.js");
+const CategoriaMarca = require("./inventory/CategoriaMarca.js");
+const EstadoProducto = require("./inventory/EstadoProducto.js");
+const Marca = require("./inventory/Marca.js");
+const Pedidos = require("./inventory/Pedidos.js");
+const Producto = require("./inventory/Producto.js");
+const ProductoSerie = require("./inventory/ProductoSerie.js");
+const SubCategoria = require("./inventory/SubCategoria.js");
 
 const models = {
   Correlativo,
@@ -51,10 +51,12 @@ const models = {
   Rol,
   Privilegio,
 };
+
 /*
 Object.values(models).forEach((model) => {
   if (typeof model.associate === "function") {
     model.associate(models);
   }
 });*/
-export { models };
+
+module.exports = { models };

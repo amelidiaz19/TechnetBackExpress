@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+const { Model, DataTypes } = require("sequelize");
 
 class NumeracionComprobante extends Model {
   static init(sequelize) {
@@ -39,4 +39,4 @@ class NumeracionComprobante extends Model {
   }
 }
 
-export default NumeracionComprobante;
+module.exports = NumeracionComprobante;

@@ -1,12 +1,13 @@
-import { Router } from "express";
-import EntidadController from "../../Controller/users/EntidadController.js";
-import Authorization from "../../middlewares/Authorization.js";
+const { Router } = require("express");
+const EntidadController = require("../../Controller/users/EntidadController.js");
+const Authorization = require("../../middlewares/Authorization.js");
 
-const AuthRouter = new Router();
+const AuthRouter = Router();
 
 // Add routes
 AuthRouter.post("/login", EntidadController.login);
 AuthRouter.post("/register", EntidadController.create);
 AuthRouter.post("/private", Authorization, EntidadController.create);
 AuthRouter.post("/validate", EntidadController.validate);
-export default AuthRouter;
+
+module.exports = AuthRouter;

@@ -1,5 +1,4 @@
-import EntidadRouter from "./Entidad.routes.js";
-
-export const UsersRouter = {
+const EntidadRouter = require("./Entidad.routes");
+exports.UsersRouter = {
   EntidadRouter,
 };

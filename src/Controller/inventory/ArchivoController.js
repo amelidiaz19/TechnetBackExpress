@@ -1,10 +1,10 @@
-import Archivo from "../../models/global/Archivo.js";
+const Archivo = require("../../models/global/Archivo.js");
 class ArchivoController {
   async Crear(req, res) {
     try {
       const tipoarchivo = req.body.tipo;
       if (req.files) {
-        const prefijo = `https://technetsac.com/api:3000/uploads`;
+        const prefijo = `https://${process.env.DB_HOST}/api/uploads`;
         const archivosSecundarios = await Promise.all(
           req.files.files.map(async (file) => {
             return await Archivo.create({
@@ -55,4 +55,4 @@ class ArchivoController {
   }
 }
 
-export default new ArchivoController();
+module.exports = new ArchivoController();

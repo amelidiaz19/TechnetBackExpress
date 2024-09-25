@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+const { Model, DataTypes } = require("sequelize");
 
 class Correlativo extends Model {
   static init(sequelize) {
@@ -12,7 +12,7 @@ class Correlativo extends Model {
         numero: {
           type: DataTypes.BIGINT,
         },
-      }, // attributes
+      },
       {
         sequelize,
         timestamps: false,
@@ -21,6 +21,7 @@ class Correlativo extends Model {
     );
     return this;
   }
+
   static associate(models) {
     this.hasMany(models.Venta, {
       foreignKey: "CorrelativoId",
@@ -33,4 +34,4 @@ class Correlativo extends Model {
   }
 }
 
-export default Correlativo;
+module.exports = Correlativo;

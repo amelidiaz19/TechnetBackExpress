@@ -1,4 +1,4 @@
-import Pedidos from "../../models/inventory/Pedidos.js";
+const Pedidos = require("../../models/inventory/Pedidos.js");
 class PedidosController {
   async register(req, res) {
     const { userId, productos, datospago, estado } = req.body;
@@ -18,4 +18,4 @@ class PedidosController {
   }
 }
 
-export default new PedidosController();
+module.exports = new PedidosController();

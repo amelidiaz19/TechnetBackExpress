@@ -1,6 +1,5 @@
-import CategoriaMarca from "../../models/inventory/CategoriaMarca.js";
-import Marca from "../../models/inventory/Marca.js";
-
+const CategoriaMarca = require("../../models/inventory/CategoriaMarca.js");
+const Marca = require("../../models/inventory/Marca.js");
 class MarcaController {
   async GetAll(req, res) {
     const resp = await Marca.findAll({ include: CategoriaMarca });
@@ -29,4 +28,4 @@ class MarcaController {
   }
 }
 
-export default new MarcaController();
+module.exports = new MarcaController();

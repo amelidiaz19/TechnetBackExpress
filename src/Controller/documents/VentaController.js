@@ -1,8 +1,8 @@
-import Venta from "../../models/documents/Venta.js";
-import Producto from "../../models/inventory/Producto.js";
-import { Op } from "sequelize";
-import ProductoSerie from "../../models/inventory/ProductoSerie.js";
-import DetalleVenta from "../../models/documents/DetalleVenta.js";
+const Venta = require("../../models/documents/Venta.js");
+const Producto = require("../../models/inventory/Producto.js");
+const { Op } = require("sequelize");
+const ProductoSerie = require("../../models/inventory/ProductoSerie.js");
+const DetalleVenta = require("../../models/documents/DetalleVenta.js");
 
 class VentaController {
   async Register(req, res) {
@@ -100,4 +100,4 @@ class VentaController {
   }
 }
 
-export default new VentaController();
+module.exports = new VentaController();

@@ -1,7 +1,7 @@
-import { Router } from "express";
-import MarcaController from "../../Controller/inventory/MarcaController.js";
+const { Router } = require("express");
+const MarcaController = require("../../Controller/inventory/MarcaController");
 
-export const MarcaRouter = Router();
+const MarcaRouter = Router();
 
 MarcaRouter.get("", MarcaController.GetAll);
 MarcaRouter.get("/paged", MarcaController.GetAllPaged);
@@ -12,4 +12,4 @@ MarcaRouter.put("/:id", MarcaController.Update);
 MarcaRouter.get("/subs/:id", MarcaController.Belongs);
 MarcaRouter.delete("/:id", MarcaController.Delete);
 
-export default MarcaRouter;
+module.exports = MarcaRouter;

@@ -1,8 +1,8 @@
-import { Router } from "express";
-import EntidadController from "../../Controller/users/EntidadController.js";
-import Authorization from "../../middlewares/Authorization.js";
+const { Router } = require("express");
+const EntidadController = require("../../Controller/users/EntidadController.js");
+const Authorization = require("../../middlewares/Authorization.js");
 
-const EntidadRouter = new Router();
+const EntidadRouter = Router();
 
 // Add routes
 EntidadRouter.get("/", Authorization, EntidadController.getAll);
@@ -13,4 +13,6 @@ EntidadRouter.get(
   EntidadController.getAllDashboard
 );
 EntidadRouter.put("/asignarrol", Authorization, EntidadController.UpdateRol);
-export default EntidadRouter;
+console.log("ENTIDADDDDDDD");
+console.log("EntidadRouter", EntidadRouter);
+module.exports = EntidadRouter;

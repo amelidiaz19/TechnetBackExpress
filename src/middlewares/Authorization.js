@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-const SECRET_KEY = "jknfcisc32879bnda87213n1328723g43576dvu28632ugi";
+const jwt = require("jsonwebtoken");
+const SECRET_KEY = process.env.SECRET_KEY;
 
 function Authorization(req, res, next) {
   const authorization = req.headers.authorization;
@@ -25,7 +25,7 @@ function Authorization(req, res, next) {
         error: error.message,
       });
     }
-    if (error instanceof jwt.JsonWebTokenError || error instanceof TokenError) {
+    if (error instanceof jwt.JsonWebTokenError) {
       return res.status(401).json({
         message: "Invalid Token",
         error: error.message,
@@ -39,4 +39,4 @@ function Authorization(req, res, next) {
   }
 }
 
-export default Authorization;
+module.exports = Authorization;

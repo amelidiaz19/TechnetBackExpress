@@ -1,8 +1,9 @@
-import { Router } from "express";
-import PaymentController from "../../Controller/auth/PaymentController.js";
+const { Router } = require("express");
+const PaymentController = require("../../Controller/auth/PaymentController.js");
 
-const PaymentRoutes = new Router();
+const PaymentRoutes = Router();
 
 PaymentRoutes.post("/external-data", PaymentController.externarData);
 PaymentRoutes.post("/validate", PaymentController.validate);
-export default PaymentRoutes;
+
+module.exports = PaymentRoutes;

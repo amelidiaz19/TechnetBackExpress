@@ -1,12 +1,12 @@
-import { Op, where } from "sequelize";
-import Database from "../../database/Database.js";
-import Producto from "../../models/inventory/Producto.js";
-import Categoria from "../../models/inventory/Categoria.js";
-import SubCategoria from "../../models/inventory/SubCategoria.js";
-import Marca from "../../models/inventory/Marca.js";
-import CategoriaMarca from "../../models/inventory/CategoriaMarca.js";
-import Archivo from "../../models/global/Archivo.js";
-import multer from "multer";
+const { Op } = require("sequelize");
+const Database = require("../../database/Database.js");
+const Producto = require("../../models/inventory/Producto.js");
+const Categoria = require("../../models/inventory/Categoria.js");
+const SubCategoria = require("../../models/inventory/SubCategoria.js");
+const Marca = require("../../models/inventory/Marca.js");
+const CategoriaMarca = require("../../models/inventory/CategoriaMarca.js");
+const Archivo = require("../../models/global/Archivo.js");
+
 class ProductoController {
   constructor() {}
   async getAll(req, res) {
@@ -294,7 +294,7 @@ class ProductoController {
     } = JSON.parse(req.body.producto);
     if (req.files) {
       const filename = req.files.fileprincipal[0].filename.replace(/\s+/g, "");
-      const prefijo = `https://technetsac.com/api:3000/uploads`;
+      const prefijo = `https://${process.env.DB_HOST}/api/uploads`;
       const Archivo_principal = await Archivo.create({
         url: `${prefijo}/${filename}`,
         nombre,
@@ -407,7 +407,7 @@ class ProductoController {
       await Archivo.destroy({ where: { id: product.ArchivoPrincipal.url } });
       await product.update({ ArchivoPrincipalId: null });
     }
-    const prefijo = `https://technetsac.com/api:3000/uploads`;
+    const prefijo = `https://${process.env.DB_HOST}/api/uploads`;
     if (req.files) {
       let Archivo_principal;
       if (req.files.fileprincipal) {
@@ -462,4 +462,4 @@ class ProductoController {
   }
 }
 
-export default new ProductoController();
+module.exports = new ProductoController();

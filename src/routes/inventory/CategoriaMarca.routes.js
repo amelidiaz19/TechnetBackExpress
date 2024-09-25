@@ -1,7 +1,7 @@
-import { Router } from "express";
-import CategoriaMarcaService from "../../Controller/inventory/CategoriaMarcaService.js";
+const { Router } = require("express");
+const CategoriaMarcaService = require("../../Controller/inventory/CategoriaMarcaService");
 
-export const CategoriaMarcaRouter = Router();
+const CategoriaMarcaRouter = Router();
 
 CategoriaMarcaRouter.get("", CategoriaMarcaService.GetAll);
 CategoriaMarcaRouter.get("/paged", CategoriaMarcaService.GetAllPaged);
@@ -11,4 +11,4 @@ CategoriaMarcaRouter.post("/saves", CategoriaMarcaService.SavesAll);
 CategoriaMarcaRouter.put("/:id", CategoriaMarcaService.Update);
 CategoriaMarcaRouter.delete("/:id", CategoriaMarcaService.Delete);
 
-export default CategoriaMarcaRouter;
+module.exports = CategoriaMarcaRouter;

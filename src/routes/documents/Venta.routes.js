@@ -1,12 +1,9 @@
-import { Router } from "express";
-import Authorization from "../../middlewares/Authorization.js";
-import VentaController from "../../Controller/documents/VentaController.js";
+const { Router } = require("express");
+const Authorization = require("../../middlewares/Authorization.js");
+const VentaController = require("../../Controller/documents/VentaController.js");
 
-// import all controllers
-// import SessionController from './app/controllers/SessionController';
-
-const VentaRoutes = new Router();
+const VentaRoutes = Router();
 
 VentaRoutes.post("/", Authorization, VentaController.Register);
 
-export default VentaRoutes;
+module.exports = VentaRoutes;

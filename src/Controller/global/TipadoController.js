@@ -1,7 +1,7 @@
-import TipoComprobante from "../../models/correlative/TipoComprobante.js";
-import TipoCondicion from "../../models/global/TipoCondicion.js";
-import TipoMoneda from "../../models/global/TipoMoneda.js";
-import TipoPago from "../../models/global/TipoPago.js";
+const TipoComprobante = require("../../models/correlative/TipoComprobante.js");
+const TipoCondicion = require("../../models/global/TipoCondicion.js");
+const TipoMoneda = require("../../models/global/TipoMoneda.js");
+const TipoPago = require("../../models/global/TipoPago.js");
 
 class TipadoController {
   async GetTipadoDocumentos(req, res) {
@@ -20,7 +20,7 @@ class TipadoController {
   }
 }
 
-export default new TipadoController();
+module.exports = new TipadoController();
 
 /**
  * 

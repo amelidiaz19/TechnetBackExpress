@@ -1,13 +1,13 @@
-import LoteRouter from "./Lote.routes.js";
-import MarcaRouter from "./Marca.routes.js";
-import ProductoRouter from "./Producto.routes.js";
-//import SubCategoriaRouter from "./SubCategoria.routes.js";
-import CategoriaRouter from "./Categoria.routes.js";
-import CategoriaMarcaRouter from "./CategoriaMarca.routes.js";
-import PedidoRoutes from "./Pedido.routes.js";
-import ProductoSerieRoutes from "./ProductoSerie.routes.js";
+const LoteRouter = require("./Lote.routes");
+const MarcaRouter = require("./Marca.routes");
+const ProductoRouter = require("./Producto.routes");
+// const SubCategoriaRouter = require("./SubCategoria.routes");
+const CategoriaRouter = require("./Categoria.routes");
+const CategoriaMarcaRouter = require("./CategoriaMarca.routes");
+const PedidoRoutes = require("./Pedido.routes");
+const ProductoSerieRoutes = require("./ProductoSerie.routes");
 
-export const InventoryRouter = {
+exports.InventoryRouter = {
   LoteRouter,
   MarcaRouter,
   ProductoRouter,

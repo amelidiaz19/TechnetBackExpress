@@ -1,9 +1,10 @@
-import { Router } from "express";
-import PedidosController from "../../Controller/inventory/PedidosController.js";
-import Authorization from "../../middlewares/Authorization.js";
+const { Router } = require("express");
+const PedidosController = require("../../Controller/inventory/PedidosController");
+const Authorization = require("../../middlewares/Authorization");
 
 const PedidoRoutes = new Router();
 
 PedidoRoutes.post("/", PedidosController.register);
 PedidoRoutes.get("/", Authorization, PedidosController.getPedidos);
-export default PedidoRoutes;
+
+module.exports = PedidoRoutes;

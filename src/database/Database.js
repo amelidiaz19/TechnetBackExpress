@@ -1,8 +1,7 @@
-import { configDotenv } from "dotenv";
-configDotenv();
-import Sequelize from "sequelize";
-import { models } from "../models/models.js";
-
+const { config } = require("dotenv");
+config();
+const Sequelize = require("sequelize");
+const { models } = require("../models/models.js");
 class Database {
   constructor() {
     this.init();
@@ -11,12 +10,12 @@ class Database {
   init() {
     try {
       this.connection = new Sequelize(
-        "technet2390_BackendExpress",
-        "technet2390_AdminExpress",
-        "HymL?VnOUh{8",
+        process.env.DB_NAME,
+        process.env.DB_USER,
+        process.env.DB_PASSWORD,
         {
-          host: "technetsac.com",
-          port: "3306",
+          host: process.env.DB_HOST,
+          port: process.env.DB_PORT,
           dialect: "mysql",
           retry: { max: 3 },
         }
@@ -48,4 +47,4 @@ class Database {
   }
 }
 
-export default new Database();
+module.exports = new Database();

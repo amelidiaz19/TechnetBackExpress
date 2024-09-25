@@ -1,13 +1,11 @@
-import axios from "axios";
-import crypto from "crypto";
+const axios = require("axios");
+const crypto = require("crypto");
 class PaymentController {
   async externarData(req, res) {
     const body = req.body;
-    const username = "80203493";
-    const password =
-      "prodpassword_I0lABqAE4l2jQ99mWMfUldMYB7TvugGErPaSC9vYr7rnM";
-    const url =
-      "https://api.micuentaweb.pe/api-payment/V4/Charge/CreatePayment";
+    const username = process.env.PAYMENT_USERNAME;
+    const password = process.env.PAYMENT_PASSWORD_PRODUCCION;
+    const url = process.env.PAYMENT_URL;
 
     const encodeCredentials = (username, password) => {
       const auth = `${username}:${password}`;
@@ -30,7 +28,7 @@ class PaymentController {
   }
   async validate(req, res) {
     const { clientAnswer, hash } = req.body;
-    const paymentHash = "uMYYm2KkOCwfCN2iBouF4BGWfHIDkmK6kAG1RLwiw4zgk";
+    const paymentHash = process.env.PAYMENT_HASH_PRODUCCION;
     let response = {};
     try {
       const answerJson = JSON.stringify(clientAnswer);
@@ -82,4 +80,4 @@ class PaymentController {
   }
 }
 
-export default new PaymentController();
+module.exports = new PaymentController();

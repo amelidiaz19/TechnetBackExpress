@@ -1,5 +1,4 @@
-//coneccion uno a muchos con CategoriaMarca
-import { Model, DataTypes } from "sequelize";
+const { Model, DataTypes } = require("sequelize");
 
 class Marca extends Model {
   static init(sequelize) {
@@ -35,4 +34,4 @@ class Marca extends Model {
   }
 }
 
-export default Marca;
+module.exports = Marca;

@@ -1,7 +1,8 @@
-import jwt from "jsonwebtoken";
-import Entidad from "../../models/users/Entidad.js";
-import Rol from "../../models/users/Rol.js";
-import { Op } from "sequelize";
+const jwt = require("jsonwebtoken");
+const Entidad = require("../../models/users/Entidad.js");
+const Rol = require("../../models/users/Rol.js");
+const { Op } = require("sequelize");
+
 class EntidadController {
   async getAll(req, res) {
     const entidades = await Entidad.findAll({
@@ -193,7 +194,7 @@ class EntidadController {
       if (resultado) {
         const token = jwt.sign(
           { id: EntidadEncontrada.id },
-          "jknfcisc32879bnda87213n1328723g43576dvu28632ugi",
+          process.env.SECRET_KEY,
           {
             expiresIn: 86400,
           }
@@ -210,4 +211,4 @@ class EntidadController {
   }
 }
 
-export default new EntidadController();
+module.exports = new EntidadController();

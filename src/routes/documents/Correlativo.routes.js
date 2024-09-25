@@ -1,7 +1,4 @@
-import { Router } from "express";
-
-// import all controllers
-// import SessionController from './app/controllers/SessionController';
+const { Router } = require("express");
 
 const CorrelativoRoutes = new Router();
 
@@ -11,4 +8,4 @@ const CorrelativoRoutes = new Router();
 // routes.put('/', SessionController.store);
 // routes.delete('/', SessionController.store);
 
-export default CorrelativoRoutes;
+module.exports = CorrelativoRoutes;

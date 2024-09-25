@@ -1,6 +1,5 @@
-import Categoria from "../../models/inventory/Categoria.js";
-import SubCategoria from "../../models/inventory/SubCategoria.js";
-
+const Categoria = require("../../models/inventory/Categoria.js");
+const SubCategoria = require("../../models/inventory/SubCategoria.js");
 class CategoriaController {
   async GetAll(req, res) {
     try {
@@ -46,4 +45,4 @@ class CategoriaController {
     res.send("funciona" + req.params.id);
   }
 }
-export default new CategoriaController();
+module.exports = new CategoriaController();

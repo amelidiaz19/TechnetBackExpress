@@ -1,7 +1,7 @@
-import { Router } from "express";
-import ArchivoController from "../../Controller/inventory/ArchivoController.js";
-import Authorization from "../../middlewares/Authorization.js";
-import upload from "../../middlewares/UploadImage.js";
+const { Router } = require("express");
+const ArchivoController = require("../../Controller/inventory/ArchivoController.js");
+const Authorization = require("../../middlewares/Authorization.js");
+const upload = require("../../middlewares/UploadImage.js");
 
 const ArchivoRoutes = new Router();
 
@@ -18,4 +18,4 @@ ArchivoRoutes.post(
 ArchivoRoutes.delete("/", ArchivoController.DeleteImagen);
 ArchivoRoutes.get("/publicitaria", ArchivoController.getImagenesPublicitarias);
 
-export default ArchivoRoutes;
+module.exports = ArchivoRoutes;

@@ -1,5 +1,5 @@
-import { Model, DataTypes } from "sequelize";
-import bcrypt from "bcryptjs";
+const { Model, DataTypes } = require("sequelize");
+const bcrypt = require("bcryptjs");
 class Entidad extends Model {
   static init(sequelize) {
     super.init(
@@ -18,7 +18,6 @@ class Entidad extends Model {
         },
         documento: {
           type: DataTypes.STRING,
-          unique: true,
         },
         direccion: {
           type: DataTypes.STRING,
@@ -45,16 +44,12 @@ class Entidad extends Model {
         tableName: "Entidad",
         hooks: {
           beforeCreate: async (Entidad, options) => {
-            console.log("ENCRYPT");
-            console.log(Entidad.password);
             if (Entidad.password != null) {
               const salt = await bcrypt.genSalt(10);
               Entidad.password = await bcrypt.hash(Entidad.password, salt);
             }
           },
           beforeUpdate: async (Entidad, options) => {
-            console.log("ENCRYPT");
-            console.log(Entidad.password);
             if (Entidad.changed("password") && Entidad.password != null) {
               const salt = await bcrypt.genSalt(10);
               Entidad.password = await bcrypt.hash(Entidad.password, salt);
@@ -149,4 +144,4 @@ class Entidad extends Model {
   }
 }
 
-export default Entidad;
+module.exports = Entidad;

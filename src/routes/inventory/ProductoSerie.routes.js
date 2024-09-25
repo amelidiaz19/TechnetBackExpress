@@ -1,9 +1,6 @@
-import { Router } from "express";
-import Authorization from "../../middlewares/Authorization.js";
-import ProductoSerieController from "../../Controller/inventory/ProductoSerieController.js";
-
-// import all controllers
-// import SessionController from './app/controllers/SessionController';
+const { Router } = require("express");
+const Authorization = require("../../middlewares/Authorization");
+const ProductoSerieController = require("../../Controller/inventory/ProductoSerieController");
 
 const ProductoSerieRoutes = new Router();
 
@@ -18,4 +15,4 @@ ProductoSerieRoutes.get(
   ProductoSerieController.getBelong
 );
 
-export default ProductoSerieRoutes;
+module.exports = ProductoSerieRoutes;

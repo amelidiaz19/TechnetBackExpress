@@ -1,7 +1,7 @@
-import { Router } from "express";
-import LoteService from "../../Controller/inventory/LoteService.js";
+const { Router } = require("express");
+const LoteService = require("../../Controller/inventory/LoteService");
 
-export const LoteRouter  = Router();
+const LoteRouter = Router();
 
 LoteRouter.get("", LoteService.GetAll);
 LoteRouter.get("/:id", LoteService.GetById);
@@ -9,4 +9,4 @@ LoteRouter.post("", LoteService.Save);
 LoteRouter.put("/:id", LoteService.Update);
 LoteRouter.delete("/:id", LoteService.Delete);
 
-export default LoteRouter;
+module.exports = LoteRouter;

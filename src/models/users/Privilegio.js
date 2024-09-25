@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+const { Model, DataTypes } = require("sequelize");
 
 class Privilegio extends Model {
   static init(sequelize) {
@@ -32,4 +32,4 @@ class Privilegio extends Model {
   }
 }
 
-export default Privilegio;
+module.exports = Privilegio;

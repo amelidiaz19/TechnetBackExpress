@@ -1,11 +1,10 @@
-import { Op } from "sequelize";
-import ProductoSerie from "../../models/inventory/ProductoSerie.js";
-import Producto from "../../models/inventory/Producto.js";
-import SubCategoria from "../../models/inventory/SubCategoria.js";
-import CategoriaMarca from "../../models/inventory/CategoriaMarca.js";
-import Marca from "../../models/inventory/Marca.js";
-import Archivo from "../../models/global/Archivo.js";
-import Categoria from "../../models/inventory/Categoria.js";
+const ProductoSerie = require("../../models/inventory/ProductoSerie.js");
+const Producto = require("../../models/inventory/Producto.js");
+const SubCategoria = require("../../models/inventory/SubCategoria.js");
+const CategoriaMarca = require("../../models/inventory/CategoriaMarca.js");
+const Marca = require("../../models/inventory/Marca.js");
+const Archivo = require("../../models/global/Archivo.js");
+const Categoria = require("../../models/inventory/Categoria.js");
 
 class ProductoSerieController {
   async getSeriesByProductoId(req, res) {
@@ -88,4 +87,4 @@ class ProductoSerieController {
   }
 }
 
-export default new ProductoSerieController();
+module.exports = new ProductoSerieController();

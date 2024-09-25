@@ -1,5 +1,4 @@
-import { Model, DataTypes } from "sequelize";
-
+const { Model, DataTypes } = require("sequelize");
 class TipoPago extends Model {
   static init(sequelize) {
     super.init(
@@ -46,4 +45,4 @@ class TipoPago extends Model {
   }
 }
 
-export default TipoPago;
+module.exports = TipoPago;

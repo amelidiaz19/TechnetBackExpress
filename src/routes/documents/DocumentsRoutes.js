@@ -1,9 +1,11 @@
-import CompraRoutes from "./Compra.routes.js";
-import CorrelativoRoutes from "./Correlativo.routes.js";
-import VentaRoutes from "./Venta.routes.js";
+const CompraRoutes = require("./Compra.routes.js");
+const CorrelativoRoutes = require("./Correlativo.routes.js");
+const VentaRoutes = require("./Venta.routes.js");
 
-export const DocumentsRoutes = {
+const DocumentsRoutes = {
   CompraRoutes,
   CorrelativoRoutes,
   VentaRoutes,
 };
+
+module.exports = DocumentsRoutes;

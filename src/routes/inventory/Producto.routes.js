@@ -1,9 +1,10 @@
-import { Router } from "express";
-import ProductoController from "../../Controller/inventory/ProductoController.js";
-import Authorization from "../../middlewares/Authorization.js";
+const { Router } = require("express");
+const ProductoController = require("../../Controller/inventory/ProductoController");
+const Authorization = require("../../middlewares/Authorization");
+const upload = require("../../middlewares/UploadImage");
 
-export const ProductoRouter = new Router();
-import upload from "../../middlewares/UploadImage.js";
+const ProductoRouter = new Router();
+
 ProductoRouter.get("/", Authorization, ProductoController.getAll);
 ProductoRouter.get("/fact", Authorization, ProductoController.GetProductsFact);
 ProductoRouter.get(
@@ -35,4 +36,4 @@ ProductoRouter.put(
 );
 ProductoRouter.get("/:id", ProductoController.getById);
 
-export default ProductoRouter;
+module.exports = ProductoRouter;

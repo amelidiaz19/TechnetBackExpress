@@ -1,7 +1,7 @@
-import ArchivoRoutes from "./Archivo.routes.js";
-import TipadoRoutes from "./Tipado.routes.js";
+const ArchivoRoutes = require("./Archivo.routes.js");
+const TipadoRoutes = require("./Tipado.routes.js");
 
-export const GlobalRoutes = {
+exports.GlobalRoutes = {
   ArchivoRoutes,
   TipadoRoutes,
 };
