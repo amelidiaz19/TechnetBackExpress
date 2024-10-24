@@ -6,6 +6,7 @@ const Marca = require("../../models/inventory/Marca.js");
 const Archivo = require("../../models/global/Archivo.js");
 const Categoria = require("../../models/inventory/Categoria.js");
 const EstadoProducto = require("../../models/inventory/EstadoProducto.js");
+const DetalleCompra = require("../../models/documents/DetalleCompra.js");
 
 class ProductoSerieController {
   async getSeriesByProductoId(req, res) {
@@ -85,6 +86,27 @@ class ProductoSerieController {
         : [],
     };
     return res.status(200).json(productoResponse);
+  }
+  async delete(req, res) {
+    const { sn } = req.params;
+    try {
+      const productoSerie = await ProductoSerie.findOne({
+        where: { sn },
+      });
+      if (!productoSerie) {
+        return res
+          .status(404)
+          .json({ message: "Producto Serie no encontrado" });
+      }
+      const detalleCompra = await DetalleCompra.findOne({
+        where: { ProductoSerieId: productoSerie.id },
+      });
+      await productoSerie.destroy();
+      await detalleCompra.destroy();
+      return res.status(200).json({ message: "Producto Serie eliminado" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 }
 

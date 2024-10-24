@@ -33,7 +33,7 @@ class ProductoSerie extends Model {
       foreignKey: "ProductoSerieId",
       sourceKey: "id",
     });
-
+    /*
     this.hasMany(models.DetalleVenta, {
       foreignKey: "ProductoSerieId",
       sourceKey: "id",
@@ -41,6 +41,24 @@ class ProductoSerie extends Model {
     models.DetalleVenta.belongsTo(this, {
       foreignKey: "ProductoSerieId",
       sourceKey: "id",
+    });*/
+    this.hasMany(models.SerieDetalleVenta, {
+      foreignKey: "ProductoSerieId",
+      as: "seriesDetallesVenta", // Alias para acceder a la relación
+    });
+
+    models.SerieDetalleVenta.belongsTo(this, {
+      foreignKey: "ProductoSerieId",
+      as: "productoSerie",
+    });
+    this.hasMany(models.SerieDetalleCotizacion, {
+      foreignKey: "ProductoSerieId",
+      as: "seriesDetallesCotizacion", // Alias para acceder a la relación
+    });
+
+    models.SerieDetalleCotizacion.belongsTo(this, {
+      foreignKey: "ProductoSerieId",
+      as: "productoSerie",
     });
   }
 }

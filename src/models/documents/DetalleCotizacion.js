@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require("sequelize");
 
-class DetalleVenta extends Model {
+class DetalleCotizacion extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -11,6 +11,9 @@ class DetalleVenta extends Model {
         },
         series: {
           type: DataTypes.JSON,
+        },
+        nombre: {
+          type: DataTypes.STRING,
         },
         cantidad: {
           type: DataTypes.INTEGER,
@@ -37,7 +40,7 @@ class DetalleVenta extends Model {
       {
         sequelize,
         timestamps: false,
-        tableName: "DetalleVenta",
+        tableName: "DetalleCotizacion",
       }
     );
 
@@ -45,16 +48,16 @@ class DetalleVenta extends Model {
   }
   static associate(models) {
     // Relación hasMany hacia la tabla intermedia SeriesDetalle
-    this.hasMany(models.SerieDetalleVenta, {
-      foreignKey: "DetalleVentaId",
+    this.hasMany(models.SerieDetalleCotizacion, {
+      foreignKey: "DetalleCotizacionId",
       as: "seriesDetalles", // Alias para acceder a la relación
     });
 
-    models.SerieDetalleVenta.belongsTo(this, {
-      foreignKey: "DetalleVentaId",
-      as: "detalleVenta",
+    models.SerieDetalleCotizacion.belongsTo(this, {
+      foreignKey: "DetalleCotizacionId",
+      as: "detalleCotizacion",
     });
   }
 }
 
-module.exports = DetalleVenta;
+module.exports = DetalleCotizacion;

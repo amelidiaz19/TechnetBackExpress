@@ -69,7 +69,7 @@ class ProductoController {
         ? producto.ArchivosRelacionados.map((img) => img.url)
         : [], // array de URLs
     }));
-
+    console.log(resp);
     return res.status(200).json(resp);
   }
   async GetProductsFact(req, res) {
@@ -371,6 +371,43 @@ class ProductoController {
     }
 
     //return res.status(200).json(resp);
+  }
+  async GetPaged2(req, res) {
+    const page = parseInt(req.query.page, 10) || 1;
+    const size = parseInt(req.query.size, 10) || 10;
+    const search = req.query.search || "";
+    const offset = (page - 1) * size; // Calcular el offset (cuántos registros saltar)
+    const limit = size; // Número de registros por página
+    const { rows: productos, count: total } = await Producto.findAndCountAll({
+      limit,
+      offset,
+    });
+    res.status(200).json({
+      productos,
+      total,
+      page,
+      pageSize: limit,
+      totalPages: Math.ceil(total / limit), // Calcular el total de páginas
+    });
+  }
+  async SearchProducto(req, res) {
+    const { search } = req.query;
+    try {
+      const producto = await Producto.findAll({
+        where: {
+          nombre: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+      });
+      if (!producto) {
+        // Solo envía una respuesta si la cotización no se encuentra
+        return res.status(404).json({ message: "Producto no encontrado" });
+      }
+      res.status(200).json(producto);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
   async Create2(req, res) {
     console.log("Archivos recibidos:", req.files); // Depuración

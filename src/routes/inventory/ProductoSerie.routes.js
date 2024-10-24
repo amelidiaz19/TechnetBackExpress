@@ -14,5 +14,9 @@ ProductoSerieRoutes.get(
   Authorization,
   ProductoSerieController.getBelong
 );
-
+ProductoSerieRoutes.delete(
+  "/:sn",
+  Authorization,
+  ProductoSerieController.delete
+);
 module.exports = ProductoSerieRoutes;

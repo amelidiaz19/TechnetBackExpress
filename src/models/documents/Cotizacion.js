@@ -1,12 +1,12 @@
 const { Model, DataTypes } = require("sequelize");
 
-class Venta extends Model {
+class Cotizacion extends Model {
   static init(sequelize) {
     super.init(
       {
         id: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
           primaryKey: true,
         },
         documento: {
@@ -30,40 +30,31 @@ class Venta extends Model {
         total: {
           type: DataTypes.DOUBLE,
         },
-        fecha_pago: {
-          type: DataTypes.DATE,
-        },
-        formapago: {
-          type: DataTypes.STRING,
-        },
         url_pdf: {
           type: DataTypes.STRING,
-        },
-        tipo_cambio: {
-          type: DataTypes.DOUBLE,
         },
       }, // attributes
       {
         sequelize,
-        timestamps: false,
-        tableName: "Venta",
+        timestamps: true,
+        tableName: "Cotizacion",
       }
     );
 
     return this;
   }
   static associate(models) {
-    this.hasMany(models.DetalleVenta, {
-      foreignKey: "VentaId",
+    this.hasMany(models.DetalleCotizacion, {
+      foreignKey: "CotizacionId",
       sourceKey: "id",
-      as: "detalleventa",
+      as: "detallecotizacion",
     });
-    models.DetalleVenta.belongsTo(this, {
-      foreignKey: "VentaId",
+    models.DetalleCotizacion.belongsTo(this, {
+      foreignKey: "CotizacionId",
       targetKey: "id",
-      as: "detalleventa",
+      as: "detallecotizacion",
     });
   }
 }
 
-module.exports = Venta;
+module.exports = Cotizacion;

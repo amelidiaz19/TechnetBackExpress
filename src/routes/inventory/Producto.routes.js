@@ -15,6 +15,8 @@ ProductoRouter.get(
 */
 ProductoRouter.get("/CategoriaProducto", ProductoController.getProductsHome);
 ProductoRouter.get("/paged", ProductoController.GetPaged);
+ProductoRouter.get("/paged2", Authorization, ProductoController.GetPaged2);
+ProductoRouter.get("/search", Authorization, ProductoController.SearchProducto);
 ProductoRouter.post(
   "/",
   [
