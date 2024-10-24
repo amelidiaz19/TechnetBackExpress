@@ -1,4 +1,5 @@
 const Pedidos = require("../../models/inventory/Pedidos.js");
+const Entidad = require("../../models/users/Entidad.js");
 class PedidosController {
   async register(req, res) {
     const { userId, productos, datospago, estado } = req.body;
@@ -14,7 +15,17 @@ class PedidosController {
   async getPedidos(req, res) {
     const { userId } = req.userId;
     const pedidos = await Pedidos.findAll({ where: userId });
-    return res.json(pedidos);
+    const resp = pedidos.map((item) => ({
+      id: item.id,
+      fecha: item.fecha,
+      productos: JSON.parse(item.productos),
+      datospago: JSON.parse(item.datospago),
+      estado: item.estado,
+      createAt: item.createAt,
+      updateAt: item.updateAt,
+      Entidad: item.EntidadId,
+    }));
+    return res.json(resp);
   }
 }
 

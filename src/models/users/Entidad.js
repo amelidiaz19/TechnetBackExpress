@@ -68,6 +68,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       sourceKey: "id",
+      as: "entidadClienteCompra",
     });
     models.Compra.belongsTo(this, {
       foreignKey: {
@@ -75,6 +76,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       targetKey: "id",
+      as: "entidadClienteCompra",
     });
     this.hasMany(models.Compra, {
       foreignKey: {
@@ -82,6 +84,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       sourceKey: "id",
+      as: "entidadNegocioCompra",
     });
     models.Compra.belongsTo(this, {
       foreignKey: {
@@ -89,6 +92,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       targetKey: "id",
+      as: "entidadNegocioCompra",
     });
 
     //Doble conexion con Venta
@@ -100,6 +104,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       sourceKey: "id",
+      as: "entidadClienteVenta",
     });
     models.Venta.belongsTo(this, {
       foreignKey: {
@@ -107,6 +112,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       targetKey: "id",
+      as: "entidadClienteVenta",
     });
     this.hasMany(models.Venta, {
       foreignKey: {
@@ -114,6 +120,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       sourceKey: "id",
+      as: "entidadNegocioVenta",
     });
     models.Venta.belongsTo(this, {
       foreignKey: {
@@ -121,6 +128,7 @@ class Entidad extends Model {
         type: DataTypes.UUID,
       },
       targetKey: "id",
+      as: "entidadNegocioVenta",
     });
 
     // conexion con Pedidos

@@ -1,5 +1,6 @@
 const axios = require("axios");
 const crypto = require("crypto");
+
 class PaymentController {
   async externarData(req, res) {
     const body = req.body;
@@ -50,7 +51,7 @@ class PaymentController {
   }
   async ipn(req, res) {
     const { "kr-answer": krAnswer, "kr-hash": krHash } = req.body; // Extraer kr-answer y kr-hash del cuerpo de la solicitud
-    const paymentHash = "uMYYm2KkOCwfCN2iBouF4BGWfHIDkmK6kAG1RLwiw4zgk"; // Obtener el payment_hash de las variables de entorno
+    const paymentHash = process.env.PAYMENT_HASH_PRODUCCION; // Obtener el payment_hash de las variables de entorno
 
     let response = {};
 

@@ -18,7 +18,17 @@ class MarcaController {
     res.send("funciona");
   }
   async Belongs(req, res) {
-    res.send("funciona");
+    const MarcaId = req.params.id;
+    if (MarcaId == null || MarcaId == undefined)
+      return res.status(400).json({ message: "id invalido" });
+    try {
+      const subcategoriaMarca = await CategoriaMarca.findAll({
+        where: { MarcaId },
+      });
+      res.status(200).json(subcategoriaMarca);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
   async Update(req, res) {
     res.send("funciona" + req.params.id);

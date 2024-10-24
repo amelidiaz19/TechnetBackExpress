@@ -7,12 +7,7 @@ const ArchivoRoutes = new Router();
 
 ArchivoRoutes.post(
   "/",
-  [
-    Authorization,
-    upload.fields([
-      { name: "files", maxCount: 8 }, // Imágenes secundarias
-    ]),
-  ],
+  [Authorization, upload.fields([{ name: "files", maxCount: 5 }])],
   ArchivoController.Crear
 );
 ArchivoRoutes.delete("/", ArchivoController.DeleteImagen);

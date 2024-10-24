@@ -5,6 +5,7 @@ const CategoriaMarca = require("../../models/inventory/CategoriaMarca.js");
 const Marca = require("../../models/inventory/Marca.js");
 const Archivo = require("../../models/global/Archivo.js");
 const Categoria = require("../../models/inventory/Categoria.js");
+const EstadoProducto = require("../../models/inventory/EstadoProducto.js");
 
 class ProductoSerieController {
   async getSeriesByProductoId(req, res) {
@@ -12,8 +13,8 @@ class ProductoSerieController {
     const series = await ProductoSerie.findAll({
       where: {
         ProductoId: id,
-        EstadoProductoId: 1,
       },
+      include: [{ model: EstadoProducto, attributes: ["nombre"] }],
       attributes: ["sn"],
     });
     return res.json(series);

@@ -107,7 +107,7 @@ class ProductoController {
         {
           model: Archivo,
           as: "ArchivoPrincipal", // alias para el campo en el resultado JSON
-          required: true,
+          required: false,
           foreignKey: "ArchivoPrincipalId",
           attributes: ["url"],
         },
@@ -119,6 +119,7 @@ class ProductoController {
         },
       ],
     });
+    console.log(producto);
     if (!producto) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
@@ -129,11 +130,17 @@ class ProductoController {
       descripcion: producto.descripcion,
       stock: producto.stock,
       precio: producto.precio,
+      CategoriaMarcaId: producto.CategoriaMarcaId,
+      SubCategoriaId: producto.SubCategoriaId,
+      MarcaId: producto.CategoriaMarca.Marca.id,
+      CategoriaId: producto.SubCategorium.CategoriaId,
       subcategoria_nombre: producto.subcategoria_nombre,
       garantia_cliente: producto.garantia_cliente,
       garantia_total: producto.garantia_total,
       categoria_nombre: producto.categoria_nombre,
-      imagen_principal: producto.ArchivoPrincipal.url,
+      imagen_principal: producto.ArchivoPrincipal
+        ? producto.ArchivoPrincipal.url
+        : "",
       imageurl: producto.ArchivosRelacionados
         ? producto.ArchivosRelacionados.map((archivo) => archivo.url)
         : [],
@@ -172,6 +179,98 @@ class ProductoController {
       productosPorCategoria[categoriaNombre].push(productoResponse);
     });
     return res.status(200).json(productosPorCategoria);
+  }
+  async getProductsHome(req, res) {
+    const nuevos = await Producto.findAll({
+      include: [
+        {
+          model: SubCategoria,
+          required: true,
+          foreignKey: "SubCategoriaId",
+          attributes: ["nombre"],
+          include: {
+            model: Categoria,
+            required: true,
+            foreignKey: "CategoriaId",
+            attributes: ["nombre"],
+          },
+        },
+        {
+          model: CategoriaMarca,
+          required: true,
+          foreignKey: "CategoriaMarcaId",
+          include: {
+            model: Marca,
+            required: true,
+            foreignKey: "MarcaId",
+            attributes: ["nombre"], // Solo traer 'nombre'
+          },
+        },
+        {
+          model: Archivo,
+          as: "ArchivoPrincipal",
+          required: true,
+          foreignKey: "ArchivoPrincipalId",
+          attributes: ["url"],
+        },
+        {
+          model: Archivo,
+          as: "ArchivosRelacionados",
+          through: { attributes: [] },
+          attributes: ["url"],
+        },
+      ],
+      limit: 10,
+      order: [["createdAt", "DESC"]],
+    });
+
+    const nuevosresp = nuevos.map((prodct) => ({
+      id: prodct.id,
+      nombre: prodct.nombre,
+      pn: prodct.pn,
+      descripcion: prodct.descripcion,
+      stock: prodct.stock,
+      precio: prodct.precio,
+      subcategoria_nombre: prodct.SubCategorium?.nombre,
+      categoria_nombre: prodct.SubCategorium?.Categorium?.nombre,
+      garantia_cliente: prodct.garantia_cliente,
+      garantia_total: prodct.garantia_total,
+      imagen_principal: prodct.ArchivoPrincipal?.url,
+      imageurl:
+        prodct.ArchivosRelacionados?.map((archivo) => archivo.url) || [],
+    }));
+    const { limit } = req.query;
+    const query = `CALL GetProductos(:limit)`;
+    const results = await Database.connection.query(query, {
+      replacements: { limit: limit }, // Pasar el parámetro al procedimiento
+    });
+    //const productosPorCategoria = {};
+    const productosPorCategoria = {};
+    results.forEach((row) => {
+      const categoriaNombre = row.categoria_nombre;
+      if (!productosPorCategoria[categoriaNombre]) {
+        productosPorCategoria[categoriaNombre] = [];
+      }
+
+      const productoResponse = {
+        id: row.id,
+        nombre: row.nombre,
+        pn: row.pn,
+        descripcion: row.descripcion,
+        stock: row.stock,
+        precio: row.precio,
+        subcategoria_nombre: row.subcategoria_nombre,
+        garantia_cliente: row.garantia_cliente,
+        garantia_total: row.garantia_total,
+        categoria_nombre: row.categoria_nombre,
+        imagen_principal: row.archivo_principal_url,
+        imageurl: row.archivos_urls ? row.archivos_urls.split(",") : [],
+      };
+
+      productosPorCategoria[categoriaNombre].push(productoResponse);
+    });
+
+    return res.status(200).json({ nuevos: nuevosresp, productosPorCategoria });
   }
   async GetPaged(req, res) {
     const { search, marca, categoria, subcategoria, page, size, sort } =
@@ -273,7 +372,9 @@ class ProductoController {
 
     //return res.status(200).json(resp);
   }
-  async Create(req, res) {
+  async Create2(req, res) {
+    console.log("Archivos recibidos:", req.files); // Depuración
+    console.log("Producto recibido:", req.body.producto);
     // Llamar a multer para procesar la subida de archivos
     const {
       id,
@@ -292,58 +393,157 @@ class ProductoController {
       imagen_principal,
       imageurl,
     } = JSON.parse(req.body.producto);
-    if (req.files) {
-      const filename = req.files.fileprincipal[0].filename.replace(/\s+/g, "");
-      const prefijo = `https://${process.env.DB_HOST}/api/uploads`;
-      const Archivo_principal = await Archivo.create({
-        url: `${prefijo}/${filename}`,
-        nombre,
-        tipo_Archivo: "imagen_producto",
-        ubicacion: req.files.fileprincipal[0].destination,
-      });
-      const producto = await Producto.create({
-        nombre,
-        pn,
-        descripcion,
-        stock,
-        precio,
-        CategoriaMarcaId,
-        SubCategoriaId,
-        garantia_cliente,
-        garantia_total,
-        cantidad,
-        ArchivoPrincipalId: Archivo_principal.id,
-      });
-      const archivosSecundarios = await Promise.all(
-        req.files.files.map(async (file) => {
-          return await Archivo.create({
-            url: `${prefijo}/${file.filename.replace(/\s+/g, "")}`,
-            nombre,
-            tipo_Archivo: "imagen_producto",
-            ubicacion: file.destination,
-          });
-        })
-      );
-      await producto.addArchivosRelacionados(archivosSecundarios);
-      return res
-        .status(200)
-        .json({ message: "Producto Registrado Exitosamente" });
-    } else {
-      const producto = await Producto.create({
-        nombre,
-        pn,
-        descripcion,
-        stock,
-        precio,
-        CategoriaMarcaId,
-        SubCategoriaId,
-        garantia_cliente,
-        garantia_total,
-        cantidad,
-      });
-      return res
-        .status(200)
-        .json({ message: "Producto Registrado Exitosamente" });
+    try {
+      if (req.files) {
+        const filename = req.files.fileprincipal[0].filename.replace(
+          /\s+/g,
+          ""
+        );
+        const prefijo = `https://${process.env.DB_HOST}/api/uploads`;
+        const Archivo_principal = await Archivo.create({
+          url: `${prefijo}/${filename}`,
+          nombre,
+          tipo_Archivo: "imagen_producto",
+          ubicacion: req.files.fileprincipal[0].destination,
+        });
+        const producto = await Producto.create({
+          nombre,
+          pn,
+          descripcion,
+          stock,
+          precio,
+          CategoriaMarcaId,
+          SubCategoriaId,
+          garantia_cliente,
+          garantia_total,
+          cantidad,
+          ArchivoPrincipalId: Archivo_principal.id,
+        });
+        const archivosSecundarios = await Promise.all(
+          req.files.files.map(async (file) => {
+            return await Archivo.create({
+              url: `${prefijo}/${file.filename.replace(/\s+/g, "")}`,
+              nombre,
+              tipo_Archivo: "imagen_producto",
+              ubicacion: file.destination,
+            });
+          })
+        );
+        await producto.addArchivosRelacionados(archivosSecundarios);
+        return res
+          .status(200)
+          .json({ message: "Producto Registrado Exitosamente" });
+      } else {
+        const producto = await Producto.create({
+          nombre,
+          pn,
+          descripcion,
+          stock,
+          precio,
+          CategoriaMarcaId,
+          SubCategoriaId,
+          garantia_cliente,
+          garantia_total,
+          cantidad,
+        });
+        return res
+          .status(200)
+          .json({ message: "Producto Registrado Exitosamente" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+  async Create(req, res) {
+    console.log("Archivos recibidos:", req.files); // Depuración
+    console.log("Producto recibido:", req.body.producto);
+
+    const {
+      id,
+      nombre,
+      pn,
+      descripcion,
+      stock,
+      precio,
+      MarcaId,
+      CategoriaMarcaId,
+      SubCategoriaId,
+      CategoriaId,
+      garantia_cliente,
+      garantia_total,
+      cantidad,
+      imagen_principal,
+      imageurl,
+    } = JSON.parse(req.body.producto);
+
+    try {
+      // Si hay archivos, procesarlos
+      if (req.files && req.files.fileprincipal) {
+        const filename = req.files.fileprincipal[0].filename.replace(
+          /\s+/g,
+          ""
+        );
+        const prefijo = `https://${process.env.DB_HOST}/api/uploads`;
+        const Archivo_principal = await Archivo.create({
+          url: `${prefijo}/${filename}`,
+          nombre,
+          tipo_Archivo: "imagen_producto",
+          ubicacion: req.files.fileprincipal[0].destination,
+        });
+
+        const producto = await Producto.create({
+          nombre,
+          pn,
+          descripcion,
+          stock,
+          precio,
+          CategoriaMarcaId,
+          SubCategoriaId,
+          garantia_cliente,
+          garantia_total,
+          cantidad,
+          ArchivoPrincipalId: Archivo_principal.id,
+        });
+
+        // Procesar archivos secundarios si existen
+        if (req.files.files) {
+          const archivosSecundarios = await Promise.all(
+            req.files.files.map(async (file) => {
+              return await Archivo.create({
+                url: `${prefijo}/${file.filename.replace(/\s+/g, "")}`,
+                nombre,
+                tipo_Archivo: "imagen_producto",
+                ubicacion: file.destination,
+              });
+            })
+          );
+          await producto.addArchivosRelacionados(archivosSecundarios);
+        }
+
+        return res
+          .status(200)
+          .json({ message: "Producto registrado exitosamente con imágenes" });
+      } else {
+        // Crear el producto sin archivos
+        const producto = await Producto.create({
+          nombre,
+          pn,
+          descripcion,
+          stock,
+          precio,
+          CategoriaMarcaId,
+          SubCategoriaId,
+          garantia_cliente,
+          garantia_total,
+          cantidad,
+        });
+
+        return res
+          .status(200)
+          .json({ message: "Producto registrado exitosamente sin imágenes" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
   }
   async Update(req, res) {
@@ -370,18 +570,20 @@ class ProductoController {
         {
           model: Archivo,
           as: "ArchivoPrincipal", // alias para el campo en el resultado JSON
-          required: true,
+          required: false,
           foreignKey: "ArchivoPrincipalId",
           attributes: ["url"],
         },
         {
           model: Archivo, // Incluir archivos relacionados (muchos a muchos)
           as: "ArchivosRelacionados",
+          required: false,
           through: { attributes: [] }, // Omitir los atributos intermedios de la tabla "producto_archivo"
           attributes: ["url"], // Traer solo la url
         },
       ],
     });
+    console.log("imagees a eliminar: ", imageurl);
     if (!product) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
@@ -404,8 +606,8 @@ class ProductoController {
       await Archivo.destroy({ where: { url: eliminadas } });
     }
     if (imagen_principal === "" && product.ArchivoPrincipal) {
-      await Archivo.destroy({ where: { id: product.ArchivoPrincipal.url } });
       await product.update({ ArchivoPrincipalId: null });
+      await Archivo.destroy({ where: { url: product.ArchivoPrincipal.url } });
     }
     const prefijo = `https://${process.env.DB_HOST}/api/uploads`;
     if (req.files) {

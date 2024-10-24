@@ -35,8 +35,18 @@ class CategoriaController {
   async SavesAll(req, res) {
     res.send("funciona");
   }
-  async SubCategoriaBelongs(req, res) {
-    res.send("funciona");
+  async Belongs(req, res) {
+    const CategoriaId = req.params.id;
+    if (CategoriaId == null || CategoriaId == undefined)
+      return res.status(400).json({ message: "id invalido" });
+    try {
+      const subCategoria = await SubCategoria.findAll({
+        where: { CategoriaId },
+      });
+      res.status(200).json(subCategoria);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
   async Update(req, res) {
     res.send("funciona" + req.params.id);

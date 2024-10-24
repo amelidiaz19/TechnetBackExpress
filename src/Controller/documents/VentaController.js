@@ -3,6 +3,7 @@ const Producto = require("../../models/inventory/Producto.js");
 const { Op } = require("sequelize");
 const ProductoSerie = require("../../models/inventory/ProductoSerie.js");
 const DetalleVenta = require("../../models/documents/DetalleVenta.js");
+const Entidad = require("../../models/users/Entidad.js");
 
 class VentaController {
   async Register(req, res) {
@@ -98,6 +99,56 @@ class VentaController {
         .json({ message: "Error al registrar la compra", error });
     }
   }
+  async GetAll(req, res) {
+    const ventas = await Venta.findAll({
+      include: [
+        {
+          model: Entidad,
+          as: "entidadClienteVenta",
+          attributes: ["nombre", "documento"],
+        },
+        {
+          model: Entidad,
+          as: "entidadNegocioVenta",
+          attributes: ["nombre", "documento"],
+        },
+      ],
+      attributes: ["documento", "total", "fecha_emision"],
+    });
+    const respuesta = ventas.map((venta) => ({
+      documento: venta.documento,
+      total: venta.total,
+      fecha_emision: venta.fecha_emision,
+      cliente: venta.entidadClienteVenta.nombre,
+      cliente_documento: venta.entidadClienteVenta.documento,
+      negocio: venta.entidadNegocioVenta.nombre,
+      negocio_documento: venta.entidadNegocioVenta.documento,
+    }));
+    return res.status(200).json(respuesta);
+  }
 }
-
+/**
+ * {
+	"0": {
+		"id": "7bce4c3b-605e-4295-8939-6f7b975c126c",
+		"documento": null,
+		"fecha_emision": "2024-10-22T05:00:00.000Z",
+		"fecha_vencimiento": "2024-10-22T05:00:00.000Z",
+		"nota": "",
+		"gravada": 6500,
+		"impuesto": 1170,
+		"total": 7670,
+		"fecha_pago": null,
+		"formapago": "1",
+		"url_pdf": null,
+		"tipo_cambio": 3,
+		"CorrelativoId": null,
+		"EntidadId": "5790066e-553c-4d8a-8207-f008c841594d",
+		"EntidadNegocioId": "5790066e-553c-4d8a-8207-f008c841594d",
+		"TipoCondicionId": 1,
+		"TipoMonedaId": 1,
+		"TipoPagoId": 1
+	}
+}
+ */
 module.exports = new VentaController();

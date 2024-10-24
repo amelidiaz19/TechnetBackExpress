@@ -46,11 +46,13 @@ class Archivo extends Model {
       foreignKey: "ArchivoPrincipalId",
       sourceKey: "id",
       as: "ArchivoPrincipal",
+      //allowNull: true,
     });
     models.Producto.belongsTo(this, {
       foreignKey: "ArchivoPrincipalId",
       targetKey: "id",
       as: "ArchivoPrincipal",
+      //allowNull: true,
     });
     //Relacion muchos a muchos con producto
     this.belongsToMany(models.Producto, {

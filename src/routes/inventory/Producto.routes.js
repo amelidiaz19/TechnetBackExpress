@@ -7,18 +7,21 @@ const ProductoRouter = new Router();
 
 ProductoRouter.get("/", Authorization, ProductoController.getAll);
 ProductoRouter.get("/fact", Authorization, ProductoController.GetProductsFact);
+/*
 ProductoRouter.get(
   "/CategoriaProducto",
   ProductoController.GetCategoriaProducto
 );
+*/
+ProductoRouter.get("/CategoriaProducto", ProductoController.getProductsHome);
 ProductoRouter.get("/paged", ProductoController.GetPaged);
 ProductoRouter.post(
   "/",
   [
     Authorization,
     upload.fields([
-      { name: "fileprincipal", maxCount: 1 }, // Imagen principal
-      { name: "files", maxCount: 5 }, // Imágenes secundarias
+      { name: "fileprincipal", maxCount: 1 },
+      { name: "files", maxCount: 5 },
     ]),
   ],
   ProductoController.Create
@@ -28,8 +31,8 @@ ProductoRouter.put(
   [
     Authorization,
     upload.fields([
-      { name: "fileprincipal", maxCount: 1 }, // Imagen principal
-      { name: "files", maxCount: 5 }, // Imágenes secundarias
+      { name: "fileprincipal", maxCount: 1 },
+      { name: "files", maxCount: 5 },
     ]),
   ],
   ProductoController.Update

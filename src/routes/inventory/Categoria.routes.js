@@ -8,7 +8,7 @@ CategoriaRouter.get("/paged", CategoriaController.GetAllPaged);
 CategoriaRouter.get("/:id", CategoriaController.GetById);
 CategoriaRouter.post("", CategoriaController.Save);
 CategoriaRouter.post("/saves", CategoriaController.SavesAll);
-CategoriaRouter.get("/subs/:id", CategoriaController.SubCategoriaBelongs);
+CategoriaRouter.get("/subs/:id", CategoriaController.Belongs);
 CategoriaRouter.put("/:id", CategoriaController.Update);
 CategoriaRouter.delete(":id", CategoriaController.Delete);
 

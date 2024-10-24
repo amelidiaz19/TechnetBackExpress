@@ -3,6 +3,7 @@ const Compra = require("../../models/documents/Compra.js");
 const ProductoSerie = require("../../models/inventory/ProductoSerie.js");
 const Producto = require("../../models/inventory/Producto.js");
 const DetalleCompra = require("../../models/documents/DetalleCompra.js");
+const Entidad = require("../../models/users/Entidad.js");
 
 class CompraController {
   async Register(req, res) {
@@ -24,6 +25,7 @@ class CompraController {
       total,
       detalles,
     } = req.body;
+    console.log("datos ingreso: ", req.body);
     if (documento_cliente == null || documento_cliente == "")
       return res.status(400).json({ message: "El cliente es requerido" });
     if (detalles.length == 0)
@@ -54,12 +56,16 @@ class CompraController {
           },
         },
       });
+      console.log("productos: ", productos);
       await Promise.all(
         detalles.map(async (detalle) => {
           const producto = productos.find((p) => p.id === detalle.id_producto);
+          console.log("producto encontrado: ", producto);
           if (producto) {
             await Promise.all(
               detalle.series.map(async (serie) => {
+                console.log("serie a ingresar: ", serie);
+                console.log("producto.id: ", producto.id);
                 const producto_serie = await ProductoSerie.create({
                   ProductoId: producto.id,
                   sn: serie,
@@ -94,6 +100,33 @@ class CompraController {
     }
   }
   static addDetalleCompra(elemt) {}
+  async GetAll(req, res) {
+    const compras = await Compra.findAll({
+      include: [
+        {
+          model: Entidad,
+          as: "entidadClienteCompra",
+          attributes: ["nombre", "documento"],
+        },
+        {
+          model: Entidad,
+          as: "entidadNegocioCompra",
+          attributes: ["nombre", "documento"],
+        },
+      ],
+      attributes: ["documento", "total", "fecha_emision"],
+    });
+    const respuesta = compras.map((venta) => ({
+      documento: venta.documento,
+      total: venta.total,
+      fecha_emision: venta.fecha_emision,
+      cliente: venta.entidadClienteCompra.nombre,
+      cliente_documento: venta.entidadClienteCompra.documento,
+      negocio: venta.entidadNegocioCompra.nombre,
+      negocio_documento: venta.entidadNegocioCompra.documento,
+    }));
+    return res.status(200).json(respuesta);
+  }
 }
 
 module.exports = new CompraController();
