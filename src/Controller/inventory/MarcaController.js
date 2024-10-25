@@ -5,17 +5,17 @@ class MarcaController {
     const resp = await Marca.findAll({ include: CategoriaMarca });
     return res.status(200).json(resp);
   }
-  async GetAllPaged(req, res) {
-    res.send("funciona");
-  }
-  async GetById(req, res) {
-    res.send("funciona" + req.params.id);
-  }
   async Save(req, res) {
-    res.send("funciona");
-  }
-  async SavesAll(req, res) {
-    res.send("funciona");
+    const { nombre } = req.body;
+    if (nombre == null || nombre == undefined || nombre == "") {
+      res.status(400).json({ message: "nombre invalido" });
+    }
+    try {
+      await Marca.create({ nombre });
+      res.status(200).json({ message: "Marca guardada correctamente" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
   async Belongs(req, res) {
     const MarcaId = req.params.id;
@@ -29,12 +29,6 @@ class MarcaController {
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
-  }
-  async Update(req, res) {
-    res.send("funciona" + req.params.id);
-  }
-  async Delete(req, res) {
-    res.send("funciona" + req.params.id);
   }
 }
 

@@ -31,6 +31,10 @@ class App {
       Routes.InventoryRouter.CategoriaRouter
     );
     this.server.use(
+      "/api/inventory/subcategoria",
+      Routes.InventoryRouter.SubCategoriaRoutes
+    );
+    this.server.use(
       "/api/inventory/categoriamarca",
       Routes.InventoryRouter.CategoriaMarcaRouter
     );

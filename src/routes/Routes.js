@@ -14,6 +14,7 @@ const PedidoRoutes = require("./inventory/Pedido.routes.js");
 const ProductoSerieRoutes = require("./inventory/ProductoSerie.routes.js");
 const ArchivoRoutes = require("./global/Archivo.routes.js");
 const TipadoRoutes = require("./global/Tipado.routes.js");
+const SubCategoriaRoutes = require("./inventory/SubCategoria.routes.js");
 exports.Routes = {
   InventoryRouter: {
     LoteRouter,
@@ -23,6 +24,7 @@ exports.Routes = {
     CategoriaMarcaRouter,
     PedidoRoutes,
     ProductoSerieRoutes,
+    SubCategoriaRoutes,
   },
   GlobalRoutes: {
     ArchivoRoutes,

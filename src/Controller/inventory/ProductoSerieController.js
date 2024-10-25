@@ -22,70 +22,74 @@ class ProductoSerieController {
   }
   async getBelong(req, res) {
     const { sn } = req.params;
-    const productoSerie = await ProductoSerie.findOne({
-      where: {
-        sn: sn,
-      },
-    });
-    const producto = await Producto.findOne({
-      where: { id: productoSerie.ProductoId },
-      include: [
-        {
-          model: SubCategoria,
-          required: true,
-          foreignKey: "SubCategoriaId",
-          include: {
-            model: Categoria,
-            required: true,
-            foreignKey: "CategoriaId",
-          },
+    try {
+      const productoSerie = await ProductoSerie.findOne({
+        where: {
+          sn: sn,
         },
+      });
+      const producto = await Producto.findOne({
+        where: { id: productoSerie.ProductoId },
+        include: [
+          {
+            model: SubCategoria,
+            required: true,
+            foreignKey: "SubCategoriaId",
+            include: {
+              model: Categoria,
+              required: true,
+              foreignKey: "CategoriaId",
+            },
+          },
 
-        {
-          model: CategoriaMarca,
-          required: true,
-          foreignKey: "CategoriaMarcaId",
-          include: {
-            model: Marca,
+          {
+            model: CategoriaMarca,
             required: true,
-            foreignKey: "MarcaId",
+            foreignKey: "CategoriaMarcaId",
+            include: {
+              model: Marca,
+              required: true,
+              foreignKey: "MarcaId",
+            },
           },
-        },
-        {
-          model: Archivo,
-          as: "ArchivoPrincipal", // alias para el campo en el resultado JSON
-          required: true,
-          foreignKey: "ArchivoPrincipalId",
-          attributes: ["url"],
-        },
-        {
-          model: Archivo, // Incluir archivos relacionados (muchos a muchos)
-          as: "ArchivosRelacionados",
-          through: { attributes: [] }, // Omitir los atributos intermedios de la tabla "producto_archivo"
-          attributes: ["url"], // Traer solo la url
-        },
-      ],
-    });
-    if (!producto) {
-      return res.status(404).json({ message: "Producto no encontrado" });
+          {
+            model: Archivo,
+            as: "ArchivoPrincipal", // alias para el campo en el resultado JSON
+            required: true,
+            foreignKey: "ArchivoPrincipalId",
+            attributes: ["url"],
+          },
+          {
+            model: Archivo, // Incluir archivos relacionados (muchos a muchos)
+            as: "ArchivosRelacionados",
+            through: { attributes: [] }, // Omitir los atributos intermedios de la tabla "producto_archivo"
+            attributes: ["url"], // Traer solo la url
+          },
+        ],
+      });
+      if (!producto) {
+        res.status(404).json({ message: "Producto no encontrado" });
+      }
+      const productoResponse = {
+        id: producto.id,
+        nombre: producto.nombre,
+        pn: producto.pn,
+        descripcion: producto.descripcion,
+        stock: producto.stock,
+        precio: producto.precio,
+        subcategoria_nombre: producto.subcategoria_nombre,
+        garantia_cliente: producto.garantia_cliente,
+        garantia_total: producto.garantia_total,
+        categoria_nombre: producto.categoria_nombre,
+        imagen_principal: producto.ArchivoPrincipal.url,
+        imageurl: producto.ArchivosRelacionados
+          ? producto.ArchivosRelacionados.map((archivo) => archivo.url)
+          : [],
+      };
+      res.status(200).json(productoResponse);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-    const productoResponse = {
-      id: producto.id,
-      nombre: producto.nombre,
-      pn: producto.pn,
-      descripcion: producto.descripcion,
-      stock: producto.stock,
-      precio: producto.precio,
-      subcategoria_nombre: producto.subcategoria_nombre,
-      garantia_cliente: producto.garantia_cliente,
-      garantia_total: producto.garantia_total,
-      categoria_nombre: producto.categoria_nombre,
-      imagen_principal: producto.ArchivoPrincipal.url,
-      imageurl: producto.ArchivosRelacionados
-        ? producto.ArchivosRelacionados.map((archivo) => archivo.url)
-        : [],
-    };
-    return res.status(200).json(productoResponse);
   }
   async delete(req, res) {
     const { sn } = req.params;

@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
-const SECRET_KEY = process.env.SECRET_KEY;
 
 function Authorization(req, res, next) {
   const authorization = req.headers.authorization;
+  console.log(authorization);
   if (!authorization) {
     return res.status(401).json({
       message: "No Authorization Header",
@@ -15,7 +15,7 @@ function Authorization(req, res, next) {
         message: "Invalid Token Format",
       });
     }
-    const decode = jwt.verify(token, SECRET_KEY);
+    const decode = jwt.verify(token, process.env.SECRET_KEY);
     req.userId = decode;
     next();
   } catch (error) {

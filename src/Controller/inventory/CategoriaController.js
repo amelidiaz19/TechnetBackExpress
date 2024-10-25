@@ -30,7 +30,19 @@ class CategoriaController {
     res.send("funciona" + req.params.id);
   }
   async Save(req, res) {
-    res.send("funciona");
+    const { nombre, descripcion } = req.body;
+    if (nombre == null || nombre == undefined || nombre == "") {
+      res.status(400).json({ message: "nombre invalido o vacio" });
+    }
+    if (descripcion == null || descripcion == undefined || descripcion == "") {
+      res.status(400).json({ message: "descripcion invalida o vacia" });
+    }
+    try {
+      await Categoria.create({ nombre, descripcion });
+      res.status(200).json({ message: "Categoria creada correctamente" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
   async SavesAll(req, res) {
     res.send("funciona");

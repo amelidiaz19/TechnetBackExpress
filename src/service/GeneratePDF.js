@@ -18,7 +18,7 @@ class GeneratePDF {
     this.generateImporteLetras(doc, invoiceData);
     this.generateCuentaBancaria(doc);
     //cambiar para despliegue
-    const ruta = `http://${process.env.DB_HOST}:3000/api/cotizaciones/COTIZACION_${invoiceData.id}.pdf`;
+    const ruta = `https://${process.env.DB_HOST}/api/cotizaciones/COTIZACION_${invoiceData.id}.pdf`;
     doc.end();
     doc.pipe(
       fs.createWriteStream(
@@ -226,17 +226,11 @@ class GeneratePDF {
       .text("CUENTAS BANCARIAS: ", 40, null)
       .moveDown()
       .font("Helvetica")
-      .text("BCP CTA CTE (Soles): 191-8777772-0-60")
-      .text("CCI: 002-191-008777772060-58")
+      .text("INTERBANK CTA CTE (Soles): 488-3001952266")
+      .text("CCI: 003-488-003001952266-40")
       .moveDown()
-      .text("BCP CTA CTE (Dolares): 191-8777772-0-60")
-      .text("CCI: 002-191-008777772060-58")
-      .moveDown()
-      .text("BBVA CTA CTE (Dolares): 191-8777772-0-60")
-      .text("CCI: 002-191-008777772060-58")
-      .moveDown()
-      .text("INTERBANK CTA CTE (Dolares): 191-8777772-0-60")
-      .text("CCI: 002-191-008777772060-58");
+      .text("BBVA AHORROS (Soles): 0011-0135-0201300201")
+      .text("CCI: 011-135-000201300201-15");
   }
   roundedRect(doc, x, y, width, height, radius) {
     doc

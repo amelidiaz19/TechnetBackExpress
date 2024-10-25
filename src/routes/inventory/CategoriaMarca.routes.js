@@ -1,14 +1,9 @@
 const { Router } = require("express");
 const CategoriaMarcaService = require("../../Controller/inventory/CategoriaMarcaService");
+const Authorization = require("../../middlewares/Authorization");
 
 const CategoriaMarcaRouter = Router();
 
-CategoriaMarcaRouter.get("", CategoriaMarcaService.GetAll);
-CategoriaMarcaRouter.get("/paged", CategoriaMarcaService.GetAllPaged);
-CategoriaMarcaRouter.get("/:id", CategoriaMarcaService.GetById);
-CategoriaMarcaRouter.post("", CategoriaMarcaService.Save);
-CategoriaMarcaRouter.post("/saves", CategoriaMarcaService.SavesAll);
-CategoriaMarcaRouter.put("/:id", CategoriaMarcaService.Update);
-CategoriaMarcaRouter.delete("/:id", CategoriaMarcaService.Delete);
+CategoriaMarcaRouter.post("", Authorization, CategoriaMarcaService.Save);
 
 module.exports = CategoriaMarcaRouter;
