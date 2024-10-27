@@ -105,8 +105,14 @@ class ProductoSerieController {
       const detalleCompra = await DetalleCompra.findOne({
         where: { ProductoSerieId: productoSerie.id },
       });
+      
       await productoSerie.destroy();
       await detalleCompra.destroy();
+      const producto = await Producto.findOne({
+        where: { id: productoSerie.ProductoId },
+      });
+      producto.stock = producto.stock - 1;
+      producto.save();
       return res.status(200).json({ message: "Producto Serie eliminado" });
     } catch (error) {
       res.status(500).json({ message: error.message });

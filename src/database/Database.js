@@ -39,7 +39,7 @@ class Database {
   }
   async sync() {
     try {
-      await this.connection.sync({ alter: true });
+      await this.connection.sync({ alter: false });
       console.log("Sincronización de modelos completada.");
     } catch (error) {
       console.error("Error al sincronizar los modelos:", error);
