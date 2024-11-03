@@ -16,7 +16,7 @@ class Producto extends Model {
           type: DataTypes.STRING,
         },
         descripcion: {
-          type: DataTypes.STRING,
+          type: DataTypes.TEXT,
         },
         garantia_cliente: {
           type: DataTypes.DOUBLE,
